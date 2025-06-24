@@ -1,0 +1,100 @@
+.cardContainer {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.humanCardContainer {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #14ee47;
+  border-radius: 5px;
+}
+.alienCardContainer {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: rgb(248, 2, 2);
+  border-radius: 5px;
+}
+.image {
+  width: 100%;
+  border-radius: 5px;
+}
+.properties {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.property {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  height: 50px;
+  text-align: start;
+}
+.propertyName {
+  display: flex;
+  font-weight: 700;
+  align-items: center;
+  margin: 0;
+  height: 50px;
+  text-align: start;
+}
+.propertyStatus {
+  display: flex;
+  font-weight: 700;
+  font-size: 12px;
+  align-items: center;
+  margin: 0;
+  height: 50px;
+  text-align: start;
+  color: #28a745;
+}
+
+.propertyAlive {
+  display: flex;
+  font-weight: 700;
+  font-size: 12px;
+  align-items: center;
+  margin: 0;
+  height: 50px;
+  text-align: start;
+  color: #c82ccd;
+}
+.propertyDead {
+  display: flex;
+  font-weight: 700;
+  font-size: 12px;
+  align-items: center;
+  margin: 0;
+  height: 50px;
+  text-align: start;
+  color: #88f0f6;
+}
+.propertyUnknown {
+  display: flex;
+  font-weight: 700;
+  font-size: 12px;
+  align-items: center;
+  margin: 0;
+  height: 50px;
+  text-align: start;
+  color: #870b0b;
+}
+
+.propertiesContainerStart {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  align-items: start;
+}
+.propertiesContainerEnd {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  align-items: end;
+}
