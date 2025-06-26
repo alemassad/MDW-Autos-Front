@@ -1,54 +1,31 @@
-# React + TypeScript + Vite
+# Automotores MDW
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una plataforma web para una agencia de automotores, desarrollada con tecnologías modernas como **React**, **TypeScript** y **Vite**. Permite a los usuarios explorar una amplia variedad de vehículos, conocer detalles de cada auto y acceder a información relevante sobre la empresa.
 
-Currently, two official plugins are available:
+## Tecnologías y Frameworks Utilizados
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React**: Biblioteca principal para la construcción de interfaces de usuario interactivas y dinámicas.
+- **TypeScript**: Añade tipado estático a JavaScript, mejorando la robustez y mantenibilidad del código.
+- **Vite**: Herramienta de desarrollo que proporciona recarga rápida (HMR) y una experiencia de desarrollo ágil.
+- **React Router**: Para la navegación entre páginas como Home, Autos, Detalle de Auto y About.
+- **CSS Modules**: Permite estilos encapsulados y reutilizables en los diferentes componentes y páginas.
+- **TailwindCSS** (opcional): Utilizado para estilos rápidos y responsivos en algunos componentes.
 
-## Expanding the ESLint configuration
+## Características principales
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Catálogo de vehículos nuevos y usados.
+- Página de inicio con presentación de la agencia.
+- Página "Acerca de nosotros" con información institucional.
+- Detalle individual de cada auto.
+- Navegación fluida entre secciones.
+- Estilos modernos y responsivos.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## Estructura del Proyecto
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- `/src/pages`: Contiene las páginas principales del sitio (Home, Autos, About, etc.).
+- `/src/components`: Componentes reutilizables como Card, Logo, Spinner, etc.
+- `/src/assets`: Imágenes y recursos estáticos.
+- `/src/pages/Pages.module.css`: Estilos globales para las páginas.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Desarrollado por Luis Alejandro Massad para la materia MDW

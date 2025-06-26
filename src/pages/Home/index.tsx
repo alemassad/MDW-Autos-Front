@@ -19,15 +19,23 @@ const Home = () => {
       </p>
       <button
         className={globalStyles.button}
-        onClick={() => navigate("/")}
-      >
-        Go to Autos
+        onClick={() => navigate("/autos")}
+      > Go to Autos
       </button>
       <button
         className={`${globalStyles.button} ${globalStyles.buttonGreen}`}
         onClick={() => navigate("/about")}
-      >
-        Go to About
+      > Go to About
+      </button>
+      <button
+        className={`${globalStyles.button} ${globalStyles.buttonBlue}`}
+        onClick={() => navigate("/signup")}
+      > Sign Up
+      </button>
+      <button
+        className={`${globalStyles.button} ${globalStyles.buttonRed}`}
+        onClick={() => navigate("/login")}
+      > Login
       </button>
     </div>
   );

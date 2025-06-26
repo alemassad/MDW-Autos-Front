@@ -40,6 +40,7 @@ const Auto = () => {
   return (
     <>
       <div>
+        <h1>Vehiculo</h1>
         {logoData.map((logo, index) => (
           <Logo
             key={index}
@@ -49,13 +50,12 @@ const Auto = () => {
             alt={logo.alt}
           />
         ))}
-        <h1>Vehiculo</h1>
       </div>
       {loading ? (
         <div className="spinner"></div>
       ) : (
         <div>
-          <h1>{auto?.name}</h1>
+          <h2>{auto?.name}</h2>
           <p>{auto?.status}</p>
           <img src={auto?.image} alt={auto?.name} />
         </div>

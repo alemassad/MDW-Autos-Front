@@ -15,7 +15,7 @@ const About = () => {
         presupuesto, brindándote confianza y seguridad en cada paso del proceso.
         ¡Visítanos y descubrí por qué somos tu mejor opción!
       </p>
-      <button className={globalStyles.button} onClick={() => navigate("/")}>
+      <button className={globalStyles.button} onClick={() => navigate("/autos")}>
         Go to Autos
       </button>
       <button
@@ -23,6 +23,18 @@ const About = () => {
         onClick={() => navigate("/about")}
       >
         Go to About
+      </button>
+      <button
+        className={`${globalStyles.button} ${globalStyles.buttonBlue}`}
+        onClick={() => navigate("/signup")}
+      >
+        Sign Up   
+      </button>
+      <button
+        className={`${globalStyles.button} ${globalStyles.buttonRed}`}
+        onClick={() => navigate("/")}
+      >
+        Go to Home
       </button>
     </div>
   );

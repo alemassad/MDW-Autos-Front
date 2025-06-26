@@ -7,6 +7,7 @@ import type { Auto } from "../../components/Card";
 import Logo from "../../components/logo/Logo";
 import Card from "../../components/Card";
 import globalStyles from "../Pages.module.css";
+import SignUpButton from "../../components/SignOutButton";
 
 const logoData: LogoInterface[] = [
   {
@@ -30,11 +31,38 @@ const Automotores = () => {
     const data = await response.json();
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 500);
     setAutos(data.results);
   };
+  const token = localStorage.getItem("token");
+  const fetchCarsById = async () => {
+    setLoading(true);
+    try {
+    const response = await fetch(
+      "http://localhost:3000/cars/6847f655c955749ad24c3380",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:
+            `Bearer ${token}` 
+        },
+      }
+    );
+      console.log("FetchCarsById: ", response);    
+    } catch (error) {
+      console.error("Error fetching car by ID:", error);
+    }
+          
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    
+  };
+
   useEffect(() => {
     fetchData();
+    fetchCarsById();
   }, []);
 
   return (
@@ -50,6 +78,7 @@ const Automotores = () => {
           />
         ))}
         <h1>Automotores</h1>
+        <SignUpButton />
       </div>
       {loading ? (
         <div className="spinner"></div>
@@ -61,7 +90,7 @@ const Automotores = () => {
         </div>
       )}{" "}
       <button className={globalStyles.button} onClick={() => navigate("/")}>
-        Go to Autos
+        Go to Home
       </button>
       <button
         className={`${globalStyles.button} ${globalStyles.buttonGreen}`}
