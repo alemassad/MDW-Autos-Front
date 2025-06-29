@@ -7,7 +7,7 @@ import type { Auto } from "../../components/Card";
 import Logo from "../../components/logo/Logo";
 import Card from "../../components/Card";
 import globalStyles from "../Pages.module.css";
-import SignUpButton from "../../components/SignOutButton";
+import SignOutButton from "../../components/SignOutButton";
 
 const logoData: LogoInterface[] = [
   {
@@ -38,48 +38,45 @@ const Automotores = () => {
   const fetchCarsById = async () => {
     setLoading(true);
     try {
-    const response = await fetch(
-      "http://localhost:3000/cars/6847f655c955749ad24c3380",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            `Bearer ${token}` 
-        },
-      }
-    );
-      console.log("FetchCarsById: ", response);    
+      const response = await fetch(
+        "http://localhost:3000/cars/6847f655c955749ad24c3380",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("FetchCarsById: ", response);
     } catch (error) {
       console.error("Error fetching car by ID:", error);
     }
-          
+
     setTimeout(() => {
       setLoading(false);
     }, 500);
-    
   };
 
   useEffect(() => {
     fetchData();
     fetchCarsById();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <div>
-        {logoData.map((logo, index) => (
-          <Logo
-            key={index}
-            src={logo.src}
-            href={logo.href}
-            className={logo.className}
-            alt={logo.alt}
-          />
-        ))}
-        <h1>Automotores</h1>
-        <SignUpButton />
-      </div>
+      {logoData.map((logo, index) => (
+        <Logo
+          key={index}
+          src={logo.src}
+          href={logo.href}
+          className={logo.className}
+          alt={logo.alt}
+        />
+      ))}
+      <h1 className={globalStyles.title}>Automotores</h1>
+      <SignOutButton />
       {loading ? (
         <div className="spinner"></div>
       ) : (
@@ -100,6 +97,6 @@ const Automotores = () => {
       </button>
     </>
   );
-}
+};
 
 export default Automotores;

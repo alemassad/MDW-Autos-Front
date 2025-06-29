@@ -1,0 +1,20 @@
+.footer {
+  background: #4b0c43f0;
+  color: #c1f0b4;  
+  text-align: center;
+  font-size: 1rem;  
+  box-shadow: 0 -2px 8px rgba(203, 146, 227, 0.07);
+}
+.copyright {
+  margin-bottom: 0.5rem;
+}
+.developer {
+  color: #88c0d0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.developer:hover {
+  color: #c1f0b4;
+  text-decoration: underline;
+}

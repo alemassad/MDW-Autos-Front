@@ -6,7 +6,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={globalStyles.container}>
+    <>
       <h1 className={globalStyles.title}>
         Bienvenido a nuestra agencia de Atomotores
       </h1>
@@ -17,27 +17,29 @@ const Home = () => {
         para todos los gustos y necesidades. ¡Comenzá hoy tu experiencia con
         Automotores MDW!
       </p>
-      <button
-        className={globalStyles.button}
-        onClick={() => navigate("/autos")}
-      > Go to Autos
-      </button>
-      <button
-        className={`${globalStyles.button} ${globalStyles.buttonGreen}`}
-        onClick={() => navigate("/about")}
-      > Go to About
-      </button>
-      <button
-        className={`${globalStyles.button} ${globalStyles.buttonBlue}`}
-        onClick={() => navigate("/signup")}
-      > Sign Up
-      </button>
-      <button
-        className={`${globalStyles.button} ${globalStyles.buttonRed}`}
-        onClick={() => navigate("/login")}
-      > Login
-      </button>
-    </div>
+      <div className={globalStyles.buttonGroup}>
+        <button
+          className={globalStyles.button}
+          onClick={() => navigate("/autos")}
+        > Go to Autos
+        </button>
+        <button
+          className={`${globalStyles.button} ${globalStyles.buttonGreen}`}
+          onClick={() => navigate("/about")}
+        > Go to About
+        </button>
+        <button
+          className={`${globalStyles.button} ${globalStyles.buttonBlue}`}
+          onClick={() => navigate("/signup")}
+        > Sign Up
+        </button>
+        <button
+          className={`${globalStyles.button} ${globalStyles.buttonRed}`}
+          onClick={() => navigate("/login")}
+        > Login
+        </button>
+      </div>
+    </>
   );
 };
 export default Home;

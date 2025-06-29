@@ -12,6 +12,7 @@ import type { User } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebase";
 import globalStyles from "./pages/Pages.module.css";
+import Layout from "./components/Layout";
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -20,11 +21,13 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        auth.currentUser?.getIdToken(true).then((token) => localStorage.setItem("token", token));
+        auth.currentUser
+          ?.getIdToken(true)
+          .then((token) => localStorage.setItem("token", token));
         setUser(user);
+        setCheckingAuth(false);
         return;
       }
-
       setUser(null);
       localStorage.removeItem("token");
       setCheckingAuth(false);
@@ -33,36 +36,37 @@ const App = () => {
   }, []);
 
   if (checkingAuth) {
-
     return <div className={globalStyles.spinner}></div>;
   }
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/autos"
-          element={
-            <ProtectedRoute user={user}>
-              <Automotores />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/autos/:id"
-          element={
-            <ProtectedRoute user={user}>
-              <Auto />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/autos"
+            element={
+              <ProtectedRoute user={user}>
+                <Automotores />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/autos/:id"
+            element={
+              <ProtectedRoute user={user}>
+                <Auto />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import autoLogo from "../../assets/coche-clasico.png";
 import "../../App.css";
 import type { LogoInterface } from "../../components/logo/Logo";
@@ -19,7 +19,7 @@ const logoData: LogoInterface[] = [
 const Auto = () => {
   const [auto, setAuto] = useState<AutoType>();
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Auto = () => {
   return (
     <>
       <div>
-        <h1>Vehiculo</h1>
+        <h1 className={globalStyles.title}>Vehiculo</h1>
         {logoData.map((logo, index) => (
           <Logo
             key={index}
@@ -59,16 +59,7 @@ const Auto = () => {
           <p>{auto?.status}</p>
           <img src={auto?.image} alt={auto?.name} />
         </div>
-      )}{" "}
-      <button className={globalStyles.button} onClick={() => navigate("/")}>
-        Go to Autos
-      </button>
-      <button
-        className={`${globalStyles.button} ${globalStyles.buttonGreen}`}
-        onClick={() => navigate("/about")}
-      >
-        Go to About
-      </button>
+      )}
     </>
   );
 };

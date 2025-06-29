@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 const About = () => {
   const navigate = useNavigate();
   return (
-    <div className={globalStyles.container}>
+    <>
       <h1 className={globalStyles.title}>Acerca de nosotros</h1>
       <p className={globalStyles.description}>
-        ¡Bienvenido a nuestra concesionaria de automotores! Nos especializamos
-        en ofrecerte la mejor selección de vehículos nuevos y usados, con
+        ¡Bienvenido a nuestra concesionaria de automotores! Nos especializamos en
+        ofrecerte la mejor selección de vehículos nuevos y usados, con
         atención personalizada y asesoramiento profesional. Nuestro objetivo es
         ayudarte a encontrar el auto ideal que se adapte a tus necesidades y
         presupuesto, brindándote confianza y seguridad en cada paso del proceso.
@@ -28,7 +28,7 @@ const About = () => {
         className={`${globalStyles.button} ${globalStyles.buttonBlue}`}
         onClick={() => navigate("/signup")}
       >
-        Sign Up   
+        Sign Up
       </button>
       <button
         className={`${globalStyles.button} ${globalStyles.buttonRed}`}
@@ -36,7 +36,7 @@ const About = () => {
       >
         Go to Home
       </button>
-    </div>
+    </>
   );
 };
 export default About;

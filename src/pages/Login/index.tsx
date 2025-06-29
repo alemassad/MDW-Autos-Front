@@ -17,31 +17,32 @@ const Login = () => {
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
     try {
       await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      navigate("/");      
-      
+      navigate("/");
       setTimeout(() => {
         setLoading(false);
       }, 500);
-      
     } catch (error) {
       console.error("Error login:", error);
+      setLoading(false);
     }
   };
 
   return (
-    <div className={globalStyles.container}>
+    <>
       <h2 className={globalStyles.title}>Login</h2>
       {loading ? (
         <div className="spinner"></div>
       ) : (
-        <form className={globalStyles.formAuto}>
+        <form onSubmit={handleLogin} className={globalStyles.formAuto}>
           <div className={globalStyles.formGroup}>
             <label htmlFor="email" className={globalStyles.formLabel}>
               Email:
@@ -63,15 +64,14 @@ const Login = () => {
             />
           </div>
           <button
-            type="button"
+            type="submit"
             className={globalStyles.formButton}
-            onClick={handleLogin}
           >
             Login
           </button>
         </form>
       )}
-    </div>
+    </>
   );
 };
 

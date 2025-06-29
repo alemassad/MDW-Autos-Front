@@ -1,7 +1,7 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
-const SignUpButton = () => {
+const SignOutButton = () => {
     const handleSignOut = async () => {
         await signOut(auth);
     };
@@ -9,4 +9,4 @@ const SignUpButton = () => {
     return <button onClick={handleSignOut}>Sign Up</button>;
 }
 
-export default SignUpButton;
+export default SignOutButton;
