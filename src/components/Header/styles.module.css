@@ -52,3 +52,10 @@
   background: #fbe9e7;
   color: #e61515;
 }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+}

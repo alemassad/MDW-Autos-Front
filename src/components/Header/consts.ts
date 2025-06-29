@@ -1,3 +1,6 @@
+import type { LogoInterface } from "../logo/Logo";
+import autoLogo from "../../assets/coche-clasico.png";
+
 interface HeaderList{
     title: string;
     link: string;
@@ -33,5 +36,13 @@ export const tokenList: HeaderList[] = [
   {
     title: "Acerca de",
     link: "/about",
+  },
+];
+export const logoData: LogoInterface[] = [
+  {
+    src: autoLogo,
+    href: "https://mdw-autos-front.vercel.app",
+    className: "logo-react",
+    alt: "MDW Autos logo",
   },
 ];
