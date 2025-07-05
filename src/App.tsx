@@ -13,6 +13,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebase";
 import globalStyles from "./pages/Pages.module.css";
 import Layout from "./components/Layout";
+import AutoDelete from "./pages/AutoDelete";
+import AutoAdd from "./pages/AutoAdd";
+import AutoEdit from "./pages/AutoEdit";
+import BuscarId from "./pages/AutoEdit/BuscarId";
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -57,6 +61,46 @@ const App = () => {
             element={
               <ProtectedRoute user={user}>
                 <Auto />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/autos/buscar"
+            element={
+              <ProtectedRoute user={user}>
+                <Auto />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/autos/borrar"
+            element={
+              <ProtectedRoute user={user}>
+                <AutoDelete />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/autos/agregar"
+            element={
+              <ProtectedRoute user={user}>
+                <AutoAdd />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/autos/modificar/:id"
+            element={
+              <ProtectedRoute user={user}>
+                <AutoEdit />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/autos/modificar"
+            element={
+              <ProtectedRoute user={user}>
+                <BuscarId />
               </ProtectedRoute>
             }
           />

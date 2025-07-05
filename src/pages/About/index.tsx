@@ -1,28 +1,25 @@
-import { useEffect } from "react";
+//import { useEffect } from "react";
 import "../../App.css";
-import { useDispatch, useSelector } from "../../store/store";
+//import { useDispatch, useSelector } from "../../store/store";
 import globalStyles from "../Pages.module.css";
-import { getAutos } from "../../slices/autos";
+//import { getAutos } from "../../slices/autos";
 
 const About = () => {
-  const { lista, loading } = useSelector((state) => state.reducer.autos);
-  console.log("Lista de autos desde Redux:", lista);
-  console.log("Loading state:", loading);
-
-  const dispatch = useDispatch();
+ // const { lista, loading } = useSelector((state) => state.reducer.autos);
+ /*  const dispatch = useDispatch();
   useEffect(() => {
     if (!lista.length) {
       dispatch(getAutos());
     }
-  }, [dispatch, lista]);
+  }, [dispatch, lista]); */
 
   return (
     <>
       <h1 className={globalStyles.title}>Acerca de nosotros</h1>
 
-      {loading ? (
+      
         <div className={globalStyles.spinner}></div>
-      ) : (
+      
         <div>
           <p className={globalStyles.description}>
             ¡Bienvenido a nuestra concesionaria de automotores! Nos
@@ -34,7 +31,7 @@ const About = () => {
             mejor opción!
           </p>        
         </div>
-      )}
+      
     </>
   );
 };

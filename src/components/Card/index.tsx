@@ -1,58 +1,33 @@
-import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 
-interface Location {
-  name: string;
-}
 export interface Auto {
+  _id: number | string;
   name: string;
-  id: number;
-  status: string;
-  image: string;
-  gender: string;
-  species: string;
-  location: Location;
-}
-const Specie = {
-  HUMAN: "Human",
-  Alien: "Alien",
-  Robot: "Robot",
-  Other: "Other",
-} as const;
-type Specie = typeof Specie[keyof typeof Specie];
-interface StatusType {
-  [key: string]: string;
+  description: string;
+  amount: number;
+  price: number;
+  image?: string;
+  isActive?: boolean;
+  ownerId?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-const PropertyCheckStatus: StatusType = {
-  Alive: styles.propertyAlive,
-  Dead: styles.propertyDead,
-  unknown: styles.propertyUnknown,
-};
 const Card = ({ auto }: { auto: Auto }) => {
-
-  const isHuman = auto.species === Specie.HUMAN;
-  
   return (
-    <div className={isHuman ? styles.humanCardContainer : styles.alienCardContainer}>
-      <div className={styles.nameContainer}>
-        <Link to={`${auto.id}`} className={styles.nameLink}>
-          <p className={styles.propertyName}>{auto.name}</p>
-        </Link>
-          </div>
-      <img src={auto.image} alt={auto.name} className={styles.image} />
-      <div className={styles.properties}>
-        <div className={styles.propertiesContainerStart}>
-          <p className={styles.propertyName}>{auto.name}</p>
-          <p className={PropertyCheckStatus[auto.status]}>{auto.status}</p>
-        </div>
-        <div className={styles.propertiesContainerEnd}>
-          <p className={styles.property}>{auto.gender}</p>
-          <p className={styles.property}>{auto.species}</p>
-        </div>
-        <p className={styles.propertyLocation}>{auto.location.name}</p>
+    <div className={styles.cardContainer}>
+      <div className={styles.infoContainer}>
+        <h2 className={styles.name}>{auto.name}</h2>
+        <p className={styles.id}>ID: {auto._id}</p>
+        <p className={styles.description}>{auto.description}</p>
+        <p className={styles.amount}>Stock: {auto.amount}</p>
+        <p className={styles.price}>Precio: u$s {auto.price}</p>
       </div>
+      {auto.image && (
+        <img src={auto.image} alt={'Foto de '+ auto.name} className={styles.image} />
+      )}
     </div>
   );
 };
+
 export default Card;

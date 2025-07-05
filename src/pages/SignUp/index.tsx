@@ -5,6 +5,8 @@ import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
 import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { signUpSchema } from "./validations";
 
 type FormValues = {
   email: string;
@@ -19,9 +21,8 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({ resolver: joiResolver(signUpSchema) });
 
   const handleSignUp = handleSubmit(async (data) => {
     try {
@@ -47,23 +48,9 @@ const SignUp = () => {
             <label htmlFor="email" className={globalStyles.formLabel}>
               Email:
             </label>
-            <input
-              className={globalStyles.formInput}
-              {...register("email", {
-                required: {
-                  value: true,
-                  message: "Se requiere un eMail",
-                },
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                  message: "Formato de eMail inválido",
-                },
-              })}
-            />
+            <input className={globalStyles.formInput} {...register("email")} />
             {errors?.email && (
-              <p className={globalStyles.formError}>
-                {errors.email.message}
-              </p>
+              <p className={globalStyles.formError}>{errors.email.message}</p>
             )}
           </div>
           <div className={globalStyles.formGroup}>
@@ -72,16 +59,7 @@ const SignUp = () => {
             </label>
             <input
               className={globalStyles.formInput}
-              {...register("password", {
-                required: {
-                  value: true,
-                  message: "Se requiere una contraseña",
-                },
-                minLength: {
-                  value: 6,
-                  message: "La contraseña debe tener al menos 6 caracteres",
-                },
-              })}
+              {...register("password")}
             />
             {errors?.password && (
               <p className={globalStyles.formError}>
@@ -95,18 +73,7 @@ const SignUp = () => {
             </label>
             <input
               className={globalStyles.formInput}
-              {...register("repeatPassword", {
-                required: {
-                  value: true,
-                  message: "Se requiere repetir contraseña",
-                },
-                minLength: {
-                  value: 6,
-                  message: "La contraseña debe tener al menos 6 caracteres",
-                },
-                validate: (value) =>
-                  value === watch("password") || "Las contraseñas no coinciden",
-              })}
+              {...register("repeatPassword")}
             />
             {errors?.repeatPassword && (
               <p className={globalStyles.formError}>

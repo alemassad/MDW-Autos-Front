@@ -1,66 +1,88 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import autoLogo from "../../assets/coche-clasico.png";
+import { useParams, useNavigate } from "react-router-dom";
 import "../../App.css";
-import type { LogoInterface } from "../../components/logo/Logo";
-import type { Auto as AutoType} from "../../components/Card";
-import Logo from "../../components/logo/Logo";
 import globalStyles from "../Pages.module.css";
-
-const logoData: LogoInterface[] = [
-  {
-    src: autoLogo,
-    href: "https://mdw-autos-front.vercel.app",
-    className: "logo-react",
-    alt: "MDW Autos logo",
-  },
-];
+import { useSelector, useDispatch } from "../../store/store";
+import { getAutoById } from "../../slices/auto";
 
 const Auto = () => {
-  const [auto, setAuto] = useState<AutoType>();
-  const [loading, setLoading] = useState<boolean>(false);
- // const navigate = useNavigate();
-  const { id } = useParams();
+  const { id: paramId } = useParams();
+  const [inputId, setInputId] = useState<string>(paramId || "");
+  const dispatch = useDispatch();
+  const { auto, loading, error } = useSelector((state) => state.reducer.auto);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const response = await fetch(
-        `https://rickandmortyapi.com/api/character/${id}`
-      );
-      const data = await response.json();
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-      setAuto(data);
-    };
-    fetchData();
-  }, [id]);
+    if (paramId) {
+      setInputId(paramId);
+      dispatch(getAutoById(paramId));
+    }
+  }, [paramId, dispatch]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputId.trim()) {
+      navigate(`/autos/${inputId.trim()}`);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <h1 className={globalStyles.title}>Vehiculo</h1>
-        {logoData.map((logo, index) => (
-          <Logo
-            key={index}
-            src={logo.src}
-            href={logo.href}
-            className={logo.className}
-            alt={logo.alt}
-          />
-        ))}
-      </div>
+    <div className={globalStyles.container}>
+      <h1 className={globalStyles.title}>Buscar Vehículo por ID</h1>
+      <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+        <label className={globalStyles.formLabel} htmlFor="autoId">
+          ID del auto
+        </label>
+        <input
+          id="autoId"
+          type="text"
+          value={inputId}
+          onChange={(e) => setInputId(e.target.value)}
+          placeholder="Ingresar Id"
+          className={globalStyles.formInput}
+        />
+        <button type="submit" className={globalStyles.formButton}>
+          Buscar
+        </button>
+      </form>
       {loading ? (
-        <div className="spinner"></div>
-      ) : (
-        <div>
-          <h2>{auto?.name}</h2>
-          <p>{auto?.status}</p>
-          <img src={auto?.image} alt={auto?.name} />
+        <div className={globalStyles.spinner}></div>
+      ) : error ? (
+        <p className={globalStyles.formError} style={{ textAlign: "center" }}>{error}</p>
+      ) : auto ? (
+        <div className={globalStyles.formAuto} style={{ marginTop: '2rem' }}>
+          <h2 style={{ textAlign: "center" }}>{auto.name}</h2>
+          <p>
+            <b>ID:</b> {auto._id}
+          </p>
+          <p>
+            <b>Descripción:</b> {auto.description}
+          </p>
+          <p>
+            <b>Stock:</b> {auto.amount}
+          </p>
+          <p>
+            <b>Precio:</b> u$s {auto.price}
+          </p>
+          {auto.ownerId && (
+            <p>
+              <b>Propietario:</b> {auto.ownerId}
+            </p>
+          )}
+          {auto.image && (
+            <img
+              src={auto.image}
+              alt={auto.name}
+              style={{
+                width: "100%",
+                borderRadius: 8,
+                marginTop: 8,
+              }}
+            />
+          )}
         </div>
-      )}
-    </>
+      ) : null}
+    </div>
   );
 };
 

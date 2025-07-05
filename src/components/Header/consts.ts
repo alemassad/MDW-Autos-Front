@@ -34,6 +34,22 @@ export const tokenList: HeaderList[] = [
     link: "/autos",
   },
   {
+    title: "Buscar auto",
+    link: "/autos/buscar",
+  },
+  {
+    title: "Eliminar auto",
+    link: "/autos/borrar",
+  },
+  {
+    title: "Agregar auto",
+    link: "/autos/agregar",
+  },
+  {
+    title: "Modificar auto",
+    link: "/autos/modificar",
+  },
+  {
     title: "Acerca de",
     link: "/about",
   },
