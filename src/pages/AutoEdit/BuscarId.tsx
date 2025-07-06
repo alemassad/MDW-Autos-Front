@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
+import miraAuto from "../../assets/miraAuto.webp";
 
 const BuscarId = () => {
   const [inputId, setInputId] = useState("");
@@ -14,10 +15,25 @@ const BuscarId = () => {
   };
 
   return (
-    <div className={globalStyles.container}>
+    <div
+      className={globalStyles.container}
+      style={{
+        backgroundImage: `url(${miraAuto})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <h1 className={globalStyles.title}>Modificar Auto por ID</h1>
       <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
-        <label className={globalStyles.formLabel} htmlFor="autoId">ID del auto</label>
+        <label className={globalStyles.formLabel} htmlFor="autoId">
+          ID del auto
+        </label>
         <input
           id="autoId"
           type="text"

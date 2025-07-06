@@ -4,6 +4,7 @@ import globalStyles from "../Pages.module.css";
 import { useSelector, useDispatch } from "../../store/store";
 import { getAutos } from "../../slices/autos";
 import Card from "../../components/Card";
+import autoreuters from "../../assets/autoreuters.jpg";
 
 const Automotores = () => {
   const { lista, loading } = useSelector((state) => state.reducer.autos);
@@ -15,10 +16,22 @@ const Automotores = () => {
       dispatch(getAutos());
     }
   }, [dispatch, lista]);
-  console.log("Lista de Autos:", lista);
 
   return (
-    <div>
+    <div
+      className={globalStyles.container}
+      style={{
+        backgroundImage: `url(${autoreuters})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+    
       <h1 className={globalStyles.title}>Veículos</h1>
 
       {loading ? (

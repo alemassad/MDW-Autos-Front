@@ -4,6 +4,7 @@ import "../../App.css";
 import globalStyles from "../Pages.module.css";
 import { useSelector, useDispatch } from "../../store/store";
 import { getAutoById } from "../../slices/auto";
+import buscaaut from "../../assets/buscaaut.jpg";
 
 const Auto = () => {
   const { id: paramId } = useParams();
@@ -48,9 +49,11 @@ const Auto = () => {
       {loading ? (
         <div className={globalStyles.spinner}></div>
       ) : error ? (
-        <p className={globalStyles.formError} style={{ textAlign: "center" }}>{error}</p>
+        <p className={globalStyles.formError} style={{ textAlign: "center" }}>
+          {error}
+        </p>
       ) : auto ? (
-        <div className={globalStyles.formAuto} style={{ marginTop: '2rem' }}>
+        <div className={globalStyles.formAuto} style={{ marginTop: "2rem" }}>
           <h2 style={{ textAlign: "center" }}>{auto.name}</h2>
           <p>
             <b>ID:</b> {auto._id}
@@ -82,6 +85,11 @@ const Auto = () => {
           )}
         </div>
       ) : null}
+      <img
+        src={buscaaut}
+        alt="Imagen de automotores"
+        className={globalStyles.image}
+      />
     </div>
   );
 };

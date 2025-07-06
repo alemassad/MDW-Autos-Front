@@ -4,14 +4,11 @@ import styles from "./styles.module.css";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import Logo from "../logo/Logo";
-import { useState } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoggedIn = Boolean(localStorage.getItem("token"));
-  const [showSearch, setShowSearch] = useState(false);
-  const [searchId, setSearchId] = useState("");
 
   const handleOnClick = (link: string) => {
     navigate(link);
@@ -21,15 +18,6 @@ const Header = () => {
     await signOut(auth);
     localStorage.removeItem("token");
     navigate("/login");
-  };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchId.trim()) {
-      navigate(`/autos/${searchId.trim()}`);
-      setShowSearch(false);
-      setSearchId("");
-    }
   };
 
   return (

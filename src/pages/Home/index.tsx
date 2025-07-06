@@ -1,9 +1,7 @@
-// Ejemplo para Home/index.tsx
-import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
+import automotores from "../../assets/automotores.jpg";
 
 const Home = () => {
-  const navigate = useNavigate();
 
   return (
     <>
@@ -17,28 +15,12 @@ const Home = () => {
         para todos los gustos y necesidades. ¡Comenzá hoy tu experiencia con
         Automotores MDW!
       </p>
-      <div className={globalStyles.buttonGroup}>
-        <button
-          className={globalStyles.button}
-          onClick={() => navigate("/autos")}
-        > Go to Autos
-        </button>
-        <button
-          className={`${globalStyles.button} ${globalStyles.buttonGreen}`}
-          onClick={() => navigate("/about")}
-        > Go to About
-        </button>
-        <button
-          className={`${globalStyles.button} ${globalStyles.buttonBlue}`}
-          onClick={() => navigate("/signup")}
-        > Sign Up
-        </button>
-        <button
-          className={`${globalStyles.button} ${globalStyles.buttonRed}`}
-          onClick={() => navigate("/login")}
-        > Login
-        </button>
-      </div>
+            
+      <img
+        src={automotores}
+        alt="Imagen de automotores"
+        className={globalStyles.image}
+      />
     </>
   );
 };

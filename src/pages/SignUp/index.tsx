@@ -7,6 +7,7 @@ import globalStyles from "../Pages.module.css";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { signUpSchema } from "./validations";
+import registraAuto from "../../assets/registraAuto.avif";
 
 type FormValues = {
   email: string;
@@ -38,7 +39,20 @@ const SignUp = () => {
   });
 
   return (
-    <>
+    <div
+      className={globalStyles.container}
+      style={{
+        backgroundImage: `url(${registraAuto})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "80vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <h2 className={globalStyles.title}>SignUp</h2>
       {loading ? (
         <div className="spinner"></div>
@@ -86,7 +100,7 @@ const SignUp = () => {
           </button>
         </form>
       )}
-    </>
+    </div>
   );
 };
 

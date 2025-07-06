@@ -4,6 +4,7 @@ import type { ChangeEvent } from "react";
 import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
+import loginAuto from "../../assets/loginAuto.webp"; 
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -38,6 +39,21 @@ const Login = () => {
 
   return (
     <>
+    <div
+      className={globalStyles.container}
+      style={{
+        backgroundImage: `url(${loginAuto})`,
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        maxWidth: "50vw",
+        maxHeight: "50vh",
+        backgroundSize: "cover", 
+                display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+
       <h2 className={globalStyles.title}>Login</h2>
       {loading ? (
         <div className="spinner"></div>
@@ -51,7 +67,7 @@ const Login = () => {
               type="email"
               className={globalStyles.formInput}
               onChange={handleEmailChange}
-            />
+              />
           </div>
           <div className={globalStyles.formGroup}>
             <label htmlFor="password" className={globalStyles.formLabel}>
@@ -61,16 +77,17 @@ const Login = () => {
               type="password"
               className={globalStyles.formInput}
               onChange={handlePasswordChange}
-            />
+              />
           </div>
           <button
             type="submit"
             className={globalStyles.formButton}
-          >
+            >
             Login
           </button>
         </form>
       )}
+      </div>
     </>
   );
 };
