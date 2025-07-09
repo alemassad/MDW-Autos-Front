@@ -18,7 +18,7 @@ const AutoEdit = () => {
     price: "",
     image: "",
     ownerId: "",
-    category: "",
+    //category: "",
   });
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const AutoEdit = () => {
         price: auto.price?.toString() || "",
         image: auto.image || "",
         ownerId: auto.ownerId || "",
-        category: ("category" in auto ? (auto as unknown as { category?: string }).category || "" : ""),
+        //category: ("category" in auto ? (auto as unknown as { category?: string }).category || "" : ""),
       });
     }
   }, [auto]);
@@ -47,14 +47,13 @@ const AutoEdit = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!id) return;
-    const data: Partial<Omit<Auto, '_id'>> & { category?: string } = {
+    const data: Partial<Omit<Auto, "_id">> = {
       name: form.name,
       description: form.description,
       amount: Number(form.amount),
       price: Number(form.price),
       image: form.image,
       ownerId: form.ownerId,
-      category: form.category,
     };
     dispatch(editAuto({ id, data }));
   };
@@ -147,7 +146,7 @@ const AutoEdit = () => {
           onChange={handleChange}
           className={globalStyles.formInput}
         />
-        <label className={globalStyles.formLabel} htmlFor="category">
+       {/*  <label className={globalStyles.formLabel} htmlFor="category">
           Categoría (ID)
         </label>
         <input
@@ -158,7 +157,7 @@ const AutoEdit = () => {
           onChange={handleChange}
           className={globalStyles.formInput}
           required
-        />
+        /> */}
         <button
           type="submit"
           className={globalStyles.formButton}
