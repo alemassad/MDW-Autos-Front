@@ -17,6 +17,12 @@ import AutoDelete from "./pages/AutoDelete";
 import AutoAdd from "./pages/AutoAdd";
 import AutoEdit from "./pages/AutoEdit";
 import BuscarId from "./pages/AutoEdit/BuscarId";
+import Categories from "./pages/Categories";
+import CategoryPage from "./pages/Category";
+import CategoryAdd from "./pages/CategoryAdd";
+import CategoryEdit from "./pages/CategoryEdit";
+import BuscarIdCategory from "./pages/CategoryEdit/BuscarId";
+import CategoryDelete from "./pages/CategoryDelete";
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -104,6 +110,63 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/categories"
+            element={
+              <ProtectedRoute user={user}>
+                <Categories />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/:id" // Ruta para ver una categoría específica por ID
+            element={
+              <ProtectedRoute user={user}>
+                <CategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/buscar" // Ruta para la página de búsqueda de categorías
+            element={
+              <ProtectedRoute user={user}>
+                <CategoryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/agregar" // <-- Nueva ruta para agregar categorías
+            element={
+              <ProtectedRoute user={user}>
+                <CategoryAdd />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/modificar/:id" // <-- Nueva ruta para editar una categoría específica
+            element={
+              <ProtectedRoute user={user}>
+                <CategoryEdit />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/modificar" // <-- Nueva ruta para buscar categoría por ID antes de modificar
+            element={
+              <ProtectedRoute user={user}>
+                <BuscarIdCategory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories/borrar" // <-- Nueva ruta para eliminar categorías
+            element={
+              <ProtectedRoute user={user}>
+                <CategoryDelete />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/about" element={<About />} />
           <Route path="/home" element={<Home />} />

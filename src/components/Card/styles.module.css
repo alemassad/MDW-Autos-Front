@@ -1,23 +1,48 @@
 .cardContainer {
-  width: 200px;
+  width: 240px;
   padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #bfe3c86a;
+  background-color: #63df8288;
+  border: 1px solid #0feb5f;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease-in-out;
 }
-.humanCardContainer {
-  width: 200px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #14ee47;
-  border-radius: 5px;
+
+.categoryCardContainer:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
-.alienCardContainer {
-  width: 200px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: rgb(248, 2, 2);
-  border-radius: 5px;
+
+.categoryName {
+  font-size: 1.9em;
+  font-weight: bold;
+  color: #4f40a6;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.categoryDescription {
+  font-size: 1em;
+  color: #802835;
+  text-align: justify;
+  line-height: 1.4;
+}
+
+.categoryCars {
+  font-size: 1em;
+  color: #802835;
+  text-align: right;
+  margin-top: 10px;
+  font-style: italic;
+}
+.categoryId {
+  font-size: 1em;
+  color: #802835;
+  text-align: center;
+  margin-top: 5px;
 }
 .image {
   width: 100%;
@@ -43,48 +68,6 @@
   height: 50px;
   text-align: start;
 }
-.propertyStatus {
-  display: flex;
-  font-weight: 700;
-  font-size: 12px;
-  align-items: center;
-  margin: 0;
-  height: 50px;
-  text-align: start;
-  color: #28a745;
-}
-
-.propertyAlive {
-  display: flex;
-  font-weight: 700;
-  font-size: 12px;
-  align-items: center;
-  margin: 0;
-  height: 50px;
-  text-align: start;
-  color: #c82ccd;
-}
-.propertyDead {
-  display: flex;
-  font-weight: 700;
-  font-size: 12px;
-  align-items: center;
-  margin: 0;
-  height: 50px;
-  text-align: start;
-  color: #88f0f6;
-}
-.propertyUnknown {
-  display: flex;
-  font-weight: 700;
-  font-size: 12px;
-  align-items: center;
-  margin: 0;
-  height: 50px;
-  text-align: start;
-  color: #870b0b;
-}
-
 .propertiesContainerStart {
   display: flex;
   flex-direction: column;
@@ -105,3 +88,4 @@
   font-weight: bold;
   margin-bottom: 8px;
 }
+

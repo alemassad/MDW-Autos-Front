@@ -17,14 +17,18 @@ const Card = ({ auto }: { auto: Auto }) => {
   return (
     <div className={styles.cardContainer}>
       <div className={styles.infoContainer}>
-        <h2 className={styles.name}>{auto.name}</h2>
-        <p className={styles.id}>ID: {auto._id}</p>
-        <p className={styles.description}>{auto.description}</p>
-        <p className={styles.amount}>Stock: {auto.amount}</p>
-        <p className={styles.price}>Precio: u$s {auto.price}</p>
+        <h2 className={styles.categoryName}>{auto.name}</h2>
+        <p className={styles.categoryId}>ID: {auto._id}</p>
+        <p className={styles.categoryDescription}>{auto.description}</p>
+        <p className={styles.categoryId}>Stock: {auto.amount}</p>
+        <p className={styles.categoryId}>Precio: u$s {auto.price}</p>
       </div>
       {auto.image && (
-        <img src={auto.image} alt={'Foto de '+ auto.name} className={styles.image} />
+        <img
+          src={auto.image}
+          alt={"Foto de " + auto.name}
+          className={styles.image}
+        />
       )}
     </div>
   );

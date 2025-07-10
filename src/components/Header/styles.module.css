@@ -1,7 +1,7 @@
 .header {
-  background: #660c6d;
-  color: #a2ef8d;
-  padding: 1.5rem 0;
+  background: #2c0303;
+  color: #87d9ee;
+  padding: 0.5rem 0;
   box-shadow: 0 2px 8px rgba(203, 146, 227, 0.07);
 }
 .title {
@@ -26,20 +26,22 @@
   padding: 0.5rem 1rem;
   border-radius: 6px;
   border: 2px solid ;
-  transition: background 0.8s, color 0.2s;
+  transition: background 0.8s, color 0.2s border-color 0.2s;
 }
 .item:hover {
   background: #673a8c;
   color: #88c0d0;
+  border-color: #ee5d28;
 }
 .active {
   background: #c1f0b4;
   color: #7830eb;
   font-weight: bold;
   box-shadow: 0 2px 8px rgba(203, 146, 227, 0.15);
+  border-color: #7830eb;
 }
 .logout {
-  color: #be6866;
+  color: #fd5a57;
   font-weight: 600;
   cursor: pointer;
   background: none;
@@ -49,7 +51,7 @@
   transition: background 0.2s, color 0.2s;
 }
 .logout:hover {
-  background: #fbe9e7;
+  background: #5ce29fa9;
   color: #e61515;
 }
 .brand {
@@ -58,4 +60,21 @@
   gap: 1rem;
   width: 100%;
   justify-content: center;
+}
+.categoryItem {
+  background-color: #39020282;
+  color: #97d399;
+  border-color: #21f428;
+}
+.categoryItem:hover {
+  background-color: #20b1e69b;
+  color: white;
+  border-color: #bf111f;
+}
+.categoryItem.active {
+  background: #14f85cf2;
+  color: #b03d3d;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(203, 146, 227, 0.15);
+  border-color: #db6326;
 }
