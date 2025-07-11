@@ -8,6 +8,11 @@ import { reducer as categoriesReducer } from "../slices/categories";
 import categoryAddReducer from "../slices/categoryAdd";
 import categoryEditReducer from "../slices/categoryEdit";
 import categoryDeleteReducer from "../slices/categoryDelete";
+import { reducer as usersReducer } from "../slices/users";
+import { userReducer } from "../slices/user";
+import userAddReducer from "../slices/userAdd";
+import { userEditReducer } from "../slices/userEdit";
+import userDeleteReducer from "../slices/userDelete";
 
 const rootReducer = combineReducers({
   autos: autosReducer,
@@ -19,6 +24,11 @@ const rootReducer = combineReducers({
   categoryAdd: categoryAddReducer,
   categoryEdit: categoryEditReducer,
   categoryDelete: categoryDeleteReducer,
+  users: usersReducer,
+  user: userReducer,
+  userAdd: userAddReducer,
+  userEdit:userEditReducer,
+  userDelete: userDeleteReducer,
 });
 
 export default rootReducer;

@@ -5,12 +5,17 @@ interface HeaderList {
   title: string;
   link: string;
   isCategoryLink?: boolean;
+  isUserLink?: boolean;
 }
 
 export const headerList: HeaderList[] = [
   {
     title: "Home",
     link: "/",
+  },
+  {
+    title: "Autos",
+    link: "/autos",
   },
   {
     title: "Login",
@@ -29,6 +34,31 @@ export const tokenList: HeaderList[] = [
   {
     title: "Home",
     link: "/",
+  },
+  {
+    title: "Users",
+    link: "/users",
+    isUserLink: true,
+  },
+  {
+    title: "Buscar Usuario",
+    link: "/users/buscar",
+    isUserLink: true,
+  },
+  {
+    title: "Agregar Usuario",
+    link: "/users/agregar",
+    isUserLink: true,
+  },
+  {
+    title: "Modificar Usuario",
+    link: "/users/modificar",
+    isUserLink: true,
+  },
+  {
+    title: "Eliminar Usuario",
+    link: "/users/borrar",
+    isUserLink: true,
   },
   {
     title: "Autos",

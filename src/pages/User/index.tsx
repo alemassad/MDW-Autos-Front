@@ -3,27 +3,29 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../../App.css";
 import globalStyles from "../Pages.module.css";
 import { useSelector, useDispatch } from "../../store/store";
-import { getAutoById } from "../../slices/auto";
-import buscaaut from "../../assets/buscaaut.jpg";
+import { getUserById } from "../../slices/user";
+import userCar from "../../assets/userCar.jpg";
+import UserCard from "../../components/UserCard";
 
-const Auto = () => {
+const UserBuscar = () => {
   const { id: paramId } = useParams();
   const [inputId, setInputId] = useState<string>(paramId || "");
   const dispatch = useDispatch();
-  const { auto, loading, error } = useSelector((state) => state.reducer.auto);
+  const { user, loading, error } = useSelector((state) => state.reducer.user);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (paramId) {
-      setInputId(paramId);
-      dispatch(getAutoById(paramId));
+      dispatch(getUserById(paramId));
+    } else {
+      setInputId("");
     }
   }, [paramId, dispatch]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputId.trim()) {
-      navigate(`/autos/${inputId.trim()}`);
+      navigate(`/users/${inputId.trim()}`);
     }
   };
 
@@ -31,7 +33,7 @@ const Auto = () => {
     <div
       className={globalStyles.container}
       style={{
-        backgroundImage: `url(${buscaaut})`,
+        backgroundImage: `url(${userCar})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -42,13 +44,13 @@ const Auto = () => {
         justifyContent: "center",
       }}
     >
-      <h1 className={globalStyles.title}>Buscar Vehículo por ID</h1>
+      <h1 className={globalStyles.title}>Buscar Usuario por ID</h1>
       <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
-        <label className={globalStyles.formLabel} htmlFor="autoId">
-          ID del auto
+        <label className={globalStyles.formLabel} htmlFor="userId">
+          ID del usuario
         </label>
         <input
-          id="autoId"
+          id="userId"
           type="text"
           value={inputId}
           onChange={(e) => setInputId(e.target.value)}
@@ -59,47 +61,23 @@ const Auto = () => {
           Buscar
         </button>
       </form>
+
       {loading ? (
         <div className={globalStyles.spinner}></div>
       ) : error ? (
         <p className={globalStyles.formError} style={{ textAlign: "center" }}>
           {error}
         </p>
-      ) : auto ? (
-        <div className={globalStyles.formAuto} style={{ marginTop: "2rem" }}>
-          <h2 style={{ textAlign: "center" }}>{auto.name}</h2>
-          <p>
-            <b>ID:</b> {auto._id}
-          </p>
-          <p>
-            <b>Descripción:</b> {auto.description}
-          </p>
-          <p>
-            <b>Stock:</b> {auto.amount}
-          </p>
-          <p>
-            <b>Precio:</b> u$s {auto.price}
-          </p>
-          {auto.ownerId && (
-            <p>
-              <b>Propietario:</b> {auto.ownerId}
-            </p>
-          )}
-          {auto.image && (
-            <img
-              src={auto.image}
-              alt={auto.name}
-              style={{
-                width: "100%",
-                borderRadius: 8,
-                marginTop: 8,
-              }}
-            />
-          )}
+      ) : user ? (
+        <div
+          className={globalStyles.userCardContainer}
+          style={{ marginTop: "20px" }}
+        >
+          <UserCard user={user} />
         </div>
       ) : null}
     </div>
   );
 };
 
-export default Auto;
+export default UserBuscar;

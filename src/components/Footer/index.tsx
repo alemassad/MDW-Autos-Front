@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div>
         <p className={styles.copyright}>
-          &copy; {new Date().getFullYear()} MDW Autos. All rights reserved.
+          &copy; {new Date().getFullYear()} MDW Automotores. All rights reserved.
         </p>
         <p>
           Developed by{" "}

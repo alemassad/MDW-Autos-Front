@@ -2,9 +2,21 @@ import globalStyles from "../Pages.module.css";
 import automotores from "../../assets/automotores.jpg";
 
 const Home = () => {
-
   return (
-    <>
+    <div
+      className={globalStyles.container}
+      style={{
+        backgroundImage: `url(${automotores})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <h1 className={globalStyles.title}>
         Bienvenido a nuestra agencia de Atomotores
       </h1>
@@ -15,13 +27,7 @@ const Home = () => {
         para todos los gustos y necesidades. ¡Comenzá hoy tu experiencia con
         Automotores MDW!
       </p>
-            
-      <img
-        src={automotores}
-        alt="Imagen de automotores"
-        className={globalStyles.image}
-      />
-    </>
+    </div>
   );
 };
 export default Home;

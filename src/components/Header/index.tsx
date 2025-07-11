@@ -50,9 +50,11 @@ const Header = () => {
               {tokenList.map((item, index) => (
                 <li
                   key={index}
-                  className={`${styles.item} ${
-                    location.pathname === item.link ? styles.active : ""
-                  } ${item.isCategoryLink ? styles.categoryItem : ""}`}
+                  className={`${styles.item} 
+                  ${location.pathname === item.link ? 
+                    styles.active : ""} 
+                    ${item.isCategoryLink ? styles.categoryItem : ""}
+                    ${item.isUserLink ? styles.userItem : ""}`}
                   onClick={() => handleOnClick(item.link)}
                 >
                   {item.title}

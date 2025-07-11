@@ -23,6 +23,12 @@ import CategoryAdd from "./pages/CategoryAdd";
 import CategoryEdit from "./pages/CategoryEdit";
 import BuscarIdCategory from "./pages/CategoryEdit/BuscarId";
 import CategoryDelete from "./pages/CategoryDelete";
+import Users from "./pages/Users";
+import UserPage from "./pages/User";
+import UserAdd from "./pages/UserAdd";
+import UserEdit from "./pages/UserEdit";
+import UserEditBuscar from "./pages/UserEdit/BuscarId";
+import UserDelete from "./pages/UserDelete";
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -119,7 +125,7 @@ const App = () => {
             }
           />
           <Route
-            path="/categories/:id" // Ruta para ver una categoría específica por ID
+            path="/categories/:id"
             element={
               <ProtectedRoute user={user}>
                 <CategoryPage />
@@ -127,7 +133,7 @@ const App = () => {
             }
           />
           <Route
-            path="/categories/buscar" // Ruta para la página de búsqueda de categorías
+            path="/categories/buscar"
             element={
               <ProtectedRoute user={user}>
                 <CategoryPage />
@@ -135,7 +141,7 @@ const App = () => {
             }
           />
           <Route
-            path="/categories/agregar" // <-- Nueva ruta para agregar categorías
+            path="/categories/agregar"
             element={
               <ProtectedRoute user={user}>
                 <CategoryAdd />
@@ -143,7 +149,7 @@ const App = () => {
             }
           />
           <Route
-            path="/categories/modificar/:id" // <-- Nueva ruta para editar una categoría específica
+            path="/categories/modificar/:id"
             element={
               <ProtectedRoute user={user}>
                 <CategoryEdit />
@@ -151,7 +157,7 @@ const App = () => {
             }
           />
           <Route
-            path="/categories/modificar" // <-- Nueva ruta para buscar categoría por ID antes de modificar
+            path="/categories/modificar"
             element={
               <ProtectedRoute user={user}>
                 <BuscarIdCategory />
@@ -159,14 +165,71 @@ const App = () => {
             }
           />
           <Route
-            path="/categories/borrar" // <-- Nueva ruta para eliminar categorías
+            path="/categories/borrar"
             element={
               <ProtectedRoute user={user}>
                 <CategoryDelete />
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute user={user}>
+                <Users />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/buscar"
+            element={
+              <ProtectedRoute user={user}>
+                <UserPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/:id"
+            element={
+              <ProtectedRoute user={user}>
+                <UserPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/agregar"
+            element={
+              <ProtectedRoute user={user}>
+                <UserAdd />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/modificar/:id"
+            element={
+              <ProtectedRoute user={user}>
+                <UserEdit />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/modificar"
+            element={
+              <ProtectedRoute user={user}>
+                <UserEditBuscar />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/borrar"
+            element={
+              <ProtectedRoute user={user}>
+                <UserDelete />
+              </ProtectedRoute>
+            }
+          />
 
+        
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/about" element={<About />} />
           <Route path="/home" element={<Home />} />

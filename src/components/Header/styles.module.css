@@ -67,7 +67,7 @@
   border-color: #21f428;
 }
 .categoryItem:hover {
-  background-color: #20b1e69b;
+  background-color: #0cf36c33;
   color: white;
   border-color: #bf111f;
 }
@@ -77,4 +77,21 @@
   font-weight: bold;
   box-shadow: 0 2px 8px rgba(203, 146, 227, 0.15);
   border-color: #db6326;
+}
+.userItem {
+  background-color: #d21c1c29;
+  color: #bf8be6;
+  border-color: #d70df6;
+}
+.userItem:hover {
+  background-color: #49d22777;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+.userItem.active {
+  background: #fbf853f5;
+  color: #0b74f4;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(203, 146, 227, 0.15);
+  border-color: #cb3bbf;
 }
