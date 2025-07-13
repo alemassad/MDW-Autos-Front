@@ -11,23 +11,22 @@ const CategoryEdit = () => {
   const { id } = useParams(); // Obtiene el ID de la URL
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // Selecciona el estado relevante del nuevo slice categoryEdit
+  
   const { category, loading, error, success } = useSelector(
     (state) => state.reducer.categoryEdit
   );
 
-  // Estado local para los campos del formulario de categoría
-  const [form, setForm] = useState<Omit<Category, "_id" | "cars">>({
+    const [form, setForm] = useState<Omit<Category, "_id" | "cars">>({
     name: "",
     description: "",
+    isActive: true,
   });
 
-  // Efecto para cargar la categoría cuando el componente se monta o el ID cambia
+ 
   useEffect(() => {
     if (id) {
       dispatch(getCategoryById(id));
     }
-    // Limpia el estado al desmontar el componente
     return () => {
       dispatch(clearEditState());
     };
@@ -39,6 +38,7 @@ const CategoryEdit = () => {
       setForm({
         name: category.name || "",
         description: category.description || "",
+        isActive: category.isActive === undefined ? true : category.isActive,
       });
     }
   }, [category]);
@@ -47,7 +47,9 @@ const CategoryEdit = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setForm({ ...form, [name]: newValue });
   };
 
   // Manejador de envío del formulario
@@ -63,9 +65,10 @@ const CategoryEdit = () => {
     }
 
     // Despacha la acción para modificar la categoría
-    const data: Partial<Omit<Category, "_id" | "cars">> = {
+    const data: Partial<Omit<Category, "_id" | "cars"| "isActive">> = {
       name: form.name,
       description: form.description,
+      //isActive: form.isActive,
     };
     dispatch(editCategory({ id, data }));
   };
@@ -110,7 +113,7 @@ const CategoryEdit = () => {
           onChange={handleChange}
           className={globalStyles.formInput}
           required
-        />
+        />        
         <button
           type="submit"
           className={globalStyles.formButton}

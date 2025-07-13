@@ -18,7 +18,7 @@ const AutoEdit = () => {
     price: "",
     image: "",
     ownerId: "",
-    //category: "",
+    isActive: true, // Añadido para controlar el estado
   });
 
   useEffect(() => {
@@ -35,13 +35,15 @@ const AutoEdit = () => {
         price: auto.price?.toString() || "",
         image: auto.image || "",
         ownerId: auto.ownerId || "",
-        //category: ("category" in auto ? (auto as unknown as { category?: string }).category || "" : ""),
+        isActive: auto.isActive === undefined ? true : auto.isActive,
       });
     }
   }, [auto]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    setForm({ ...form, [name]: newValue });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -54,6 +56,7 @@ const AutoEdit = () => {
       price: Number(form.price),
       image: form.image,
       ownerId: form.ownerId,
+      isActive: form.isActive,
     };
     dispatch(editAuto({ id, data }));
   };
@@ -146,18 +149,19 @@ const AutoEdit = () => {
           onChange={handleChange}
           className={globalStyles.formInput}
         />
-       {/*  <label className={globalStyles.formLabel} htmlFor="category">
-          Categoría (ID)
-        </label>
-        <input
-          id="category"
-          name="category"
-          type="text"
-          value={form.category}
-          onChange={handleChange}
-          className={globalStyles.formInput}
-          required
-        /> */}
+        <div style={{ display: 'flex', alignItems: 'center', margin: '1rem 0' }}>
+          <input
+            id="isActive"
+            name="isActive"
+            type="checkbox"
+            checked={form.isActive}
+            onChange={handleChange}
+            style={{ marginRight: '0.5rem' }}
+          />
+          <label className={globalStyles.formLabel} htmlFor="isActive">
+            Activo
+          </label>
+        </div>       
         <button
           type="submit"
           className={globalStyles.formButton}

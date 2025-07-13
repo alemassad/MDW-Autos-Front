@@ -9,12 +9,20 @@ interface AutoDeleteState {
 
 export const deleteAutoById = createAsyncThunk(
   "autoDelete/deleteAutoById",
-  async (id: string, { rejectWithValue }) => {
+  async (
+    { id, isLogical }: { id: string; isLogical: boolean },
+    { rejectWithValue }
+  ) => {
     try {
-      await api.delete(`/cars/${id}`);
-      return "Auto eliminado correctamente.";
+      if (isLogical) {
+        await api.patch(`/cars/logical-delete/${id}`);
+        return "Auto dado de baja correctamente (baja lógica).";
+      } else {
+        await api.delete(`/cars/${id}`);
+        return "Auto eliminado permanentemente (baja física).";
+      }
     } catch (err) {
-      return rejectWithValue("Error al eliminar el auto "+ err);
+      return rejectWithValue("Error al procesar la solicitud: " + err);
     }
   }
 );

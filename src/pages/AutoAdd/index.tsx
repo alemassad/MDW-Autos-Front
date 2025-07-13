@@ -12,6 +12,7 @@ const AutoAdd = () => {
     amount: "",
     price: "",
     image: "",
+    isActive: true,
     ownerId: "",
     category: "",
   });
@@ -50,6 +51,7 @@ const AutoAdd = () => {
       price: Number(form.price),
       image: form.image,
       category: form.category,
+      isActive: true,
     };
     if (form.ownerId) {
       dispatch(
@@ -66,6 +68,7 @@ const AutoAdd = () => {
       amount: "",
       price: "",
       image: "",
+      isActive: true,
       ownerId: "",
       category: "",
     });

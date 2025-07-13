@@ -11,8 +11,7 @@ const getUserToken = async () => {
       if (user) {
         const token = await getIdToken(user);
         resolve(token);
-      } else {
-        console.log("User is not authenticated");        
+      } else {       
         resolve(null);
       }
       unsubscribe();

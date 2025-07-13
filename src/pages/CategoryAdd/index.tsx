@@ -11,6 +11,7 @@ const CategoryAdd = () => {
   const [form, setForm] = useState<Omit<Category, "_id" | "cars">>({
     name: "",
     description: "",
+    isActive: true,
   });
 
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const CategoryAdd = () => {
     setForm({
       name: "",
       description: "",
+      isActive: true,
     });
   };
 

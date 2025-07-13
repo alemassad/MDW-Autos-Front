@@ -1,14 +1,19 @@
 import type { LogoInterface } from "../logo/Logo";
 import autoLogo from "../../assets/coche-clasico.png";
 
-interface HeaderList {
+export interface HeaderListItem {
   title: string;
   link: string;
-  isCategoryLink?: boolean;
-  isUserLink?: boolean;
 }
 
-export const headerList: HeaderList[] = [
+export interface DropdownMenu {
+  title: string;
+  items: HeaderListItem[];
+}
+
+export type NavItem = HeaderListItem | DropdownMenu;
+
+export const headerList: HeaderListItem[] = [
   {
     title: "Home",
     link: "/",
@@ -30,7 +35,93 @@ export const headerList: HeaderList[] = [
     link: "/about",
   },
 ];
-export const tokenList: HeaderList[] = [
+export const adminList: NavItem[] = [
+  {
+    title: "Home",
+    link: "/",
+  },
+  {
+    title: "Users",
+    items: [
+      {
+        title: "Users",
+        link: "/users",
+      },
+      {
+        title: "Buscar Usuario",
+        link: "/users/buscar",
+      },
+      {
+        title: "Agregar Usuario",
+        link: "/users/agregar",
+      },
+      {
+        title: "Modificar Usuario",
+        link: "/users/modificar",
+      },
+      {
+        title: "Eliminar Usuario",
+        link: "/users/borrar",
+      },
+    ],
+  },
+  {
+    title: "Autos",
+    items: [
+      {
+        title: "Autos",
+        link: "/autos",
+      },
+      {
+        title: "Buscar auto",
+        link: "/autos/buscar",
+      },
+      {
+        title: "Eliminar auto",
+        link: "/autos/borrar",
+      },
+      {
+        title: "Agregar auto",
+        link: "/autos/agregar",
+      },
+      {
+        title: "Modificar auto",
+        link: "/autos/modificar",
+      },
+    ],
+  },
+  {
+    title: "Categorías",
+    items: [
+      {
+        title: "Categorías",
+        link: "/categories",
+      },
+      {
+        title: "Buscar categoría",
+        link: "/categories/buscar",
+      },
+      {
+        title: "Agregar categoría",
+        link: "/categories/agregar",
+      },
+      {
+        title: "Modificar categoría",
+        link: "/categories/modificar",
+      },
+      {
+        title: "Eliminar categoría",
+        link: "/categories/borrar",
+      },
+    ],
+  },
+  {
+    title: "Acerca de",
+    link: "/about",
+  },
+];
+
+export const tokenList: NavItem[] = [
   {
     title: "Home",
     link: "/",
@@ -38,72 +129,32 @@ export const tokenList: HeaderList[] = [
   {
     title: "Users",
     link: "/users",
-    isUserLink: true,
-  },
-  {
-    title: "Buscar Usuario",
-    link: "/users/buscar",
-    isUserLink: true,
-  },
-  {
-    title: "Agregar Usuario",
-    link: "/users/agregar",
-    isUserLink: true,
-  },
-  {
-    title: "Modificar Usuario",
-    link: "/users/modificar",
-    isUserLink: true,
-  },
-  {
-    title: "Eliminar Usuario",
-    link: "/users/borrar",
-    isUserLink: true,
   },
   {
     title: "Autos",
-    link: "/autos",
+    items: [
+      {
+        title: "Autos",
+        link: "/autos",
+      },
+      {
+        title: "Buscar auto",
+        link: "/autos/buscar",
+      },
+    ],
   },
   {
-    title: "Buscar auto",
-    link: "/autos/buscar",
-  },
-  {
-    title: "Eliminar auto",
-    link: "/autos/borrar",
-  },
-  {
-    title: "Agregar auto",
-    link: "/autos/agregar",
-  },
-  {
-    title: "Modificar auto",
-    link: "/autos/modificar",
-  },
-  {
-    title: "Categorías",
-    link: "/categories",
-    isCategoryLink: true,
-  },
-  {
-    title: "Buscar categoría",
-    link: "/categories/buscar",
-    isCategoryLink: true,
-  },
-  {
-    title: "Agregar categoría",
-    link: "/categories/agregar",
-    isCategoryLink: true,
-  },
-  {
-    title: "Modificar categoría",
-    link: "/categories/modificar",
-    isCategoryLink: true,
-  },
-  {
-    title: "Eliminar categoría",
-    link: "/categories/borrar",
-    isCategoryLink: true,
+    title: "Categories",
+    items: [
+      {
+        title: "Categories",
+        link: "/categories",
+      },
+      {
+        title: "Buscar categoría",
+        link: "/categories/buscar",
+      },
+    ],
   },
   {
     title: "Acerca de",
@@ -119,3 +170,4 @@ export const logoData: LogoInterface[] = [
     alt: "MDW Autos logo",
   },
 ];
+

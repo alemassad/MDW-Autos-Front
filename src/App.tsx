@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Automotores from "./pages/Autos";
+import Autos from "./pages/Autos";
 import About from "./pages/About";
 import Auto from "./pages/Auto";
 import SignUp from "./pages/SignUp";
@@ -60,14 +60,8 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/autos"
-            element={
-              <ProtectedRoute user={user}>
-                <Automotores />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/autos" element={<Autos />} />
+
           <Route
             path="/autos/:id"
             element={
@@ -229,7 +223,6 @@ const App = () => {
             }
           />
 
-        
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/about" element={<About />} />
           <Route path="/home" element={<Home />} />

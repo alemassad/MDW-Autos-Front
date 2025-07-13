@@ -5,14 +5,13 @@
   min-height: 100vh;
   margin: 1vh;
   padding: 1vh;
-  border-radius: 1px; 
+  border-radius: 1px;
   box-shadow: none;
   background: #9ceede54;
   display: flex;
   flex-direction: column;
-  justify-content:flex-start !important;
+  justify-content: flex-start !important;
   padding-top: 2h !important;
-  
 }
 
 .main {
@@ -30,13 +29,34 @@
 }
 
 .description {
-  font-size: 1.2rem;
-  color: #5e2f35;
+  font-size: 1.3rem;
+  color: #3413dc;
   text-align: center;
-  padding: 0 1rem; 
+  padding: 0 1rem;
   margin-bottom: 2rem;
   line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(246, 82, 82, 0.066);
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
+.ulDescription {
+  color: #175bc1;
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  text-align: start;
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(82, 246, 153, 0.208);
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
 
 .button {
   background-color: #2563eb;
@@ -78,6 +98,8 @@
   max-width: 400px;
   margin: 0 auto;
   border: 2px solid #7bcb9b;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .formGroup {
@@ -89,7 +111,7 @@
 
 .formLabel {
   font-weight: 600;
-  color: #2563eb;
+  color: #20361c;
   margin-bottom: 0.2rem;
 }
 
@@ -145,9 +167,28 @@
 .h1 {
   font-size: 2rem;
   font-weight: bold;
-  color: #2563eb;
+  color: #eb5d25;
   text-align: center;
   margin-bottom: 1rem;
+}
+.h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #bdeb25;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.homeTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #740860;
+  text-align: center;
+}
+.homeList {
+  gap: 20px;
+  color: #960115;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
 }
 .image {
   width: 100%;
@@ -192,7 +233,7 @@
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
-.formCheckbox{
+.formCheckbox {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -200,8 +241,8 @@
 }
 .formCheckboxContainer {
   display: flex;
-  flex-direction: column;  
-  align-items: center;     
-  justify-content: center; 
-  margin-bottom: 1rem;     
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
 }

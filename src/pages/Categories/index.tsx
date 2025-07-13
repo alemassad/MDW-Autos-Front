@@ -11,12 +11,13 @@ const Categories = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!lista.length) {
+    
       dispatch(getCategories());
-    }
-  }, [dispatch, lista]);
+    
+  }, [dispatch]);
 
-  console.log("Contenido de lista en Categories:", lista);
+ 
+   const activeCategories = lista.filter((categories) => categories.isActive);
 
   return (
     <div
@@ -40,8 +41,8 @@ const Categories = () => {
         <h1>Loading...</h1>
       ) : (
         <div className="cardList">
-          {lista.map((category) => (
-            <CardCategory key={category._id} category={category} />
+          {activeCategories.map((categories) => (
+            <CardCategory key={categories._id} category={categories} />
           ))}
         </div>
       )}

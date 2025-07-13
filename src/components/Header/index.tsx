@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { tokenList, headerList, logoData } from "./consts";
+import { tokenList, headerList, logoData, type NavItem, adminList } from "./consts";
 import styles from "./styles.module.css";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
@@ -8,7 +8,9 @@ import Logo from "../logo/Logo";
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isLoggedIn = Boolean(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
+  const userString = localStorage.getItem("user");
+  const user = userString ? JSON.parse(userString) : null;
 
   const handleOnClick = (link: string) => {
     navigate(link);
@@ -17,7 +19,54 @@ const Header = () => {
   const handleLogout = async () => {
     await signOut(auth);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
+  };
+
+  const renderNavItem = (item: NavItem, index: number) => {
+    if ("items" in item) {
+      return (
+        <li key={index} className={styles.dropdown}>
+          <span className={styles.item}>{item.title}</span>
+          <ul className={styles.dropdownContent}>
+            {item.items.map((subItem, subIndex) => (
+              <li
+                key={subIndex}
+                className={`${styles.item} ${
+                  location.pathname === subItem.link ? styles.active : ""
+                }`}
+                onClick={() => handleOnClick(subItem.link)}
+              >
+                {subItem.title}
+              </li>
+            ))}
+          </ul>
+        </li>
+      );
+    }
+    return (
+      <li
+        key={index}
+        className={`${styles.item} ${
+          location.pathname === item.link ? styles.active : ""
+        }`}
+        onClick={() => handleOnClick(item.link)}
+      >
+        {item.title}
+      </li>
+    );
+  };
+
+  const getNavItems = () => {
+    if (!token) {
+      return headerList; // No hay token, mostrar headerList
+    }
+
+    if (user?.isAdmin) {
+      return adminList; // Hay usuario y es admin, mostrar adminList
+    }
+
+    return tokenList; // Hay token pero no es admin, mostrar tokenList
   };
 
   return (
@@ -45,43 +94,15 @@ const Header = () => {
       </div>
       <nav className={styles.nav}>
         <ul className={styles.list}>
-          {isLoggedIn ? (
-            <>
-              {tokenList.map((item, index) => (
-                <li
-                  key={index}
-                  className={`${styles.item} 
-                  ${location.pathname === item.link ? 
-                    styles.active : ""} 
-                    ${item.isCategoryLink ? styles.categoryItem : ""}
-                    ${item.isUserLink ? styles.userItem : ""}`}
-                  onClick={() => handleOnClick(item.link)}
-                >
-                  {item.title}
-                </li>
-              ))}
-              <li
-                key="logout"
-                className={`${styles.item} ${styles.logout}`}
-                onClick={handleLogout}
-              >
-                Cerrar sesión
-              </li>
-            </>
-          ) : (
-            headerList.map((item, index) => (
-              <li
-                key={index}
-                className={
-                  location.pathname === item.link
-                    ? `${styles.item} ${styles.active}`
-                    : styles.item
-                }
-                onClick={() => handleOnClick(item.link)}
-              >
-                {item.title}
-              </li>
-            ))
+          {getNavItems().map(renderNavItem)}
+          {token && (
+            <li
+              key="logout"
+              className={`${styles.item} ${styles.logout}`}
+              onClick={handleLogout}
+            >
+              Cerrar sesión
+            </li>
           )}
         </ul>
       </nav>

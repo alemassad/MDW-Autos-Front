@@ -2,6 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../config/axios";
 import type { Category } from "../types/category";
+import type { AxiosError } from "axios";
 
 // Define el estado para la operación de edición de categoría
 interface CategoryEditState {
@@ -19,9 +20,12 @@ export const getCategoryById = createAsyncThunk(
       const res = await api.get(`/categories/${id}`);
       return res.data;
     } catch (err) {
-        console.log("Error al buscar la categoría:", err);
-        
-      return rejectWithValue(err || "Error al buscar la categoría.");
+      const error = err as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.message ||
+          "Error al modificar la categoría."
+      );
     }
   }
 );
@@ -34,9 +38,13 @@ export const editCategory = createAsyncThunk(
       await api.patch(`/categories/${id}`, data);
       return "Categoría modificada correctamente.";
     } catch (err) {
-        console.log("Error al modificar la categoría:", err);
-        
-      return rejectWithValue(err || "Error al modificar la categoría.");
+      const error = err as AxiosError<{ message: string }>; 
+
+      return rejectWithValue(
+        error.response?.data?.message ||
+          error.message ||
+          "Error al modificar la categoría."
+      );
     }
   }
 );

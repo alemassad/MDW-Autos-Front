@@ -3,6 +3,7 @@ export interface Auto {
   name: string;
   description: string;
   amount: number;
+  isActive?: boolean;
   price: number;  
   image?: string;
   ownerId: string;
