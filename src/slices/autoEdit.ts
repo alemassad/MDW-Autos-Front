@@ -14,7 +14,7 @@ export const getAutoById = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/cars/${id}`);
-      return res.data;
+      return res.data.data; // Solo el objeto auto
     } catch (err) {
       return rejectWithValue("Error al buscar el auto "+ err);
     }

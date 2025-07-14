@@ -18,7 +18,7 @@ export const getCategoryById = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/categories/${id}`);
-      return res.data;
+      return res.data.data;
     } catch (err) {
       const error = err as AxiosError<{ message: string }>;
       return rejectWithValue(

@@ -18,7 +18,8 @@ const UserEdit = () => {
     lastname: "",
     birthdate: "",
     email: "",
-    isAdmin: "",
+    isAdmin: false,
+    isActive: true,
   });
 
   useEffect(() => {
@@ -33,33 +34,68 @@ const UserEdit = () => {
       setForm({
         name: user.name || "",
         lastname: user.lastname || "",
-        birthdate: user.birthdate || "",
+        birthdate: user.birthdate ? user.birthdate.split("T")[0] : "",
         email: user.email || "",
-        isAdmin: user.isAdmin ? "true" : "false",        
+        isAdmin: user.isAdmin || false,
+        isActive: user.isActive === undefined ? true : user.isActive,
       });
     }
   }, [user]);
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+ const handleChange = (
+   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+ ) => {
+   const { name, value, type } = e.target;
+   const newValue =
+     type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+   setForm({ ...form, [name]: newValue });
+ };
 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!id) return;
+
+    let birthdateForApi: string | undefined;
+    if (form.birthdate) {
+            birthdateForApi = `${form.birthdate}T00:00:00`;
+    }
+
+    if (!form.name.trim() || !form.lastname.trim() || !form.email.trim()) {
+      return;
+    }
     const data: Partial<Omit<User, "_id">> = {
       name: form.name,
       lastname: form.lastname,
-      birthdate: form.birthdate,
+      birthdate: birthdateForApi,
       email: form.email,
-      isAdmin: form.isAdmin === "true" ? true : false, // Convert to boolean
+      isAdmin: form.isAdmin,
+      isActive: form.isActive,
     };
     dispatch(editUser({ id, data }));
   };
+
+  if (loading) {
+    return (
+      <div
+        className={globalStyles.container}
+        style={{
+          backgroundImage: `url(${miraAuto})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h1 className={globalStyles.title}>Modificar Usuario</h1>
+        <h2 style={{ color: "#fff" }}>Cargando datos del usuario...</h2>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -126,20 +162,36 @@ const UserEdit = () => {
           className={globalStyles.formInput}
           required
         />
-        <label className={globalStyles.formLabel} htmlFor="isAdmin">
-          Es Admin?
-        </label>
-        <select
-          id="isAdmin"
-          name="isAdmin"
-          value={form.isAdmin}
-          onChange={handleChange}
-          className={globalStyles.formInput}
-          required
+        <div
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "0.5rem 0" }}
         >
-          <option value="true">Sí</option>
-          <option value="false">No</option>
-        </select>
+          <input
+            id="isAdmin"
+            name="isAdmin"
+            type="checkbox"
+            checked={form.isAdmin}
+            onChange={handleChange}
+            style={{ marginRight: "0.5rem" }}
+          />
+          <label className={globalStyles.formLabel} htmlFor="isAdmin">
+            ¿Es Administrador?
+          </label>
+        </div>
+        <div
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "0.5rem 0" }}
+        >
+          <input
+            id="isActive"
+            name="isActive"
+            type="checkbox"
+            checked={form.isActive}
+            onChange={handleChange}
+            style={{ marginRight: "0.5rem" }}
+          />
+          <label className={globalStyles.formLabel} htmlFor="isActive">
+            ¿Usuario Activo?
+          </label>
+        </div>
 
         <button
           type="submit"

@@ -3,14 +3,27 @@ import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
 import miraAuto from "../../assets/miraAuto.webp";
 
+// Importar axios para hacer la consulta
+import axios from "../../config/axios";
+
 const BuscarUserId = () => {
   const [inputId, setInputId] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputId.trim()) {
-      navigate(`/users/modificar/${inputId.trim()}`);
+    setError("");
+    if (!inputId.trim()) return;
+    try {
+      const res = await axios.get(`/users/${inputId.trim()}`);
+      if (res.data && res.data.data) {
+        navigate(`/users/modificar/${inputId.trim()}`);
+      } else {
+        setError("No se encontró un usuario con ese ID.");
+      }
+    } catch {
+      setError("No se encontró un usuario con ese ID.");
     }
   };
 
@@ -31,6 +44,9 @@ const BuscarUserId = () => {
     >
       <h1 className={globalStyles.title}>Modificar Usuario por ID</h1>
       <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+        {error && (
+          <p className={globalStyles.formError} style={{ textAlign: "center" }}>{error}</p>
+        )}
         <label className={globalStyles.formLabel} htmlFor="autoId">
           ID del Usuario
         </label>

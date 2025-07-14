@@ -18,7 +18,7 @@ const AutoEdit = () => {
     price: "",
     image: "",
     ownerId: "",
-    isActive: true, // Añadido para controlar el estado
+    isActive: true, 
   });
 
   useEffect(() => {

@@ -16,6 +16,7 @@ const Users = () => {
       dispatch(getUsers());
     }
   }, [dispatch, lista]);
+  const activeUsers = lista.filter((user) => user.isActive);
 
   return (
     <div
@@ -38,7 +39,7 @@ const Users = () => {
         <h1>Loading...</h1>
       ) : (
         <div className="cardList">
-          {lista.map((user) => (
+          {activeUsers.map((user) => (
             <UserCard key={user._id} user={user} />
           ))}
         </div>

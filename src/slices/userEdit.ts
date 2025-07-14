@@ -14,7 +14,7 @@ export const getUserById = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/users/${id}`);
-      return res.data;
+      return res.data.data; // Solo el objeto usuario
     } catch (err) {
       return rejectWithValue("Error al buscar el usuario " + err);
     }

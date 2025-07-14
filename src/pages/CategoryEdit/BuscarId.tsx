@@ -4,15 +4,27 @@ import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
 import categoryImage from "../../assets/autoreuters.jpg"; // Puedes usar una imagen relevante para categorías
 
+// Importar axios para hacer la consulta
+import axios from "../../config/axios";
+
 const BuscarIdCategory = () => {
   const [inputId, setInputId] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (inputId.trim()) {
-      // Navega a la ruta de edición con el ID ingresado
-      navigate(`/categories/modificar/${inputId.trim()}`);
+    setError("");
+    if (!inputId.trim()) return;
+    try {
+      const res = await axios.get(`/categories/${inputId.trim()}`);
+      if (res.data && res.data.data) {
+        navigate(`/categories/modificar/${inputId.trim()}`);
+      } else {
+        setError("No se encontró una categoría con ese ID.");
+      }
+    } catch {
+      setError("No se encontró una categoría con ese ID.");
     }
   };
 
@@ -33,6 +45,9 @@ const BuscarIdCategory = () => {
     >
       <h1 className={globalStyles.title}>Modificar Categoría por ID</h1>
       <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+        {error && (
+          <p className={globalStyles.formError} style={{ textAlign: "center" }}>{error}</p>
+        )}
         <label className={globalStyles.formLabel} htmlFor="categoryId">
           ID de la Categoría
         </label>

@@ -19,7 +19,17 @@ const UserAdd = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addUser({ name, lastname, birthdate, email, password, isAdmin })).then((result) => {
+    dispatch(
+      addUser({
+        name,
+        lastname,
+        birthdate,
+        email,
+        password,
+        isAdmin,
+        isActive: true,
+      })
+    ).then((result) => {
       if (result.meta.requestStatus === "fulfilled") {
         navigate("/users");
       }

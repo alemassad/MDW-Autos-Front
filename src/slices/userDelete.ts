@@ -9,12 +9,20 @@ interface UserDeleteState {
 
 export const deleteUserById = createAsyncThunk(
   "userDelete/deleteUserById",
-  async (id: string, { rejectWithValue }) => {
+  async (
+    { id, isLogical }: { id: string; isLogical: boolean },
+    { rejectWithValue }
+  ) => {
     try {
-      await api.delete(`/users/${id}`);
-      return "Usuario eliminado correctamente.";
+      if (isLogical) {
+        await api.patch(`/users/logical-delete/${id}`);
+        return "Usuario dado de baja correctamente (baja lógica).";
+      } else {
+        await api.delete(`/users/${id}`);
+        return "Usuario eliminado permanentemente (baja física).";
+      }
     } catch (err) {
-      return rejectWithValue("Error al eliminar el usuario "+ err);
+      return rejectWithValue("Error al eliminar el usuario " + err);
     }
   }
 );
