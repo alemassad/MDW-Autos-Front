@@ -32,7 +32,6 @@ const UserDelete = () => {
     setInputId("");
     setIsModalOpen(false);
   };
-
   return (
     <>
       <div
