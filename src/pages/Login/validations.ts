@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const signUpSchema = Joi.object({
+export const loginSchema = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .required()
@@ -12,6 +12,6 @@ export const signUpSchema = Joi.object({
   password: Joi.string().min(6).required().messages({
     "string.min": "La contraseña debe tener al menos 6 caracteres",
     "string.empty": "Se requiere una contraseña",
-    "any.required": "Se requiere una contraseña válida",
+    "any.required": "Se requiere una contraseña válida",    
   }),  
 });

@@ -1,25 +1,24 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import globalStyles from "../Pages.module.css";
 import { useDispatch, useSelector } from "../../store/store";
 import { addAuto, clearAddState } from "../../slices/autoAdd";
 import type { Auto } from "../../types/autos";
 import joven from "../../assets/joven.avif";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { autoAddSchema } from "./validations";
+
+// Use Omit<Auto, "_id"> directly for form data type
 
 const AutoAdd = () => {
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    amount: "",
-    price: "",
-    image: "",
-    isActive: true,
-    ownerId: "",
-    category: "",
-  });
   const dispatch = useDispatch();
   const { loading, success, error } = useSelector(
     (state) => state.reducer.autoAdd
   );
+
+  const { register, handleSubmit, formState: { errors } } = useForm<Omit<Auto, "_id" | "isActive"> & { category: string }>({
+    resolver: joiResolver(autoAddSchema)
+  });
 
   useEffect(() => {
     return () => {
@@ -27,51 +26,19 @@ const AutoAdd = () => {
     };
   }, [dispatch]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = (data: Omit<Auto, "_id"> & { category: string }) => {
     dispatch(clearAddState());
-    if (
-      !form.name ||
-      !form.description ||
-      !form.amount ||
-      !form.price ||
-      !form.category
-    )
-      return;
-    const baseData = {
-      name: form.name,
-      description: form.description,
-      amount: Number(form.amount),
-      price: Number(form.price),
-      image: form.image,
-      category: form.category,
+    const baseData: Omit<Auto, "_id"> & { category: string } = {
+      name: data.name,
+      description: data.description,
+      amount: Number(data.amount),
+      price: Number(data.price),
+      image: data.image,
+      category: data.category,
       isActive: true,
+      ownerId: data.ownerId || "",
     };
-    if (form.ownerId) {
-      dispatch(
-        addAuto({ ...baseData, ownerId: form.ownerId } as Omit<Auto, "_id"> & {
-          category: string;
-        })
-      );
-    } else {
-      dispatch(addAuto(baseData as Omit<Auto, "_id"> & { category: string }));
-    }
-    setForm({
-      name: "",
-      description: "",
-      amount: "",
-      price: "",
-      image: "",
-      isActive: true,
-      ownerId: "",
-      category: "",
-    });
+    dispatch(addAuto(baseData));
   };
 
   return (
@@ -90,90 +57,83 @@ const AutoAdd = () => {
       }}
     >
       <h1 className={globalStyles.title}>Agregar Auto</h1>
-      <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+      <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}>
         <label className={globalStyles.formLabel} htmlFor="name">
           Nombre
         </label>
         <input
           id="name"
-          name="name"
+          {...register("name")}
           type="text"
-          value={form.name}
-          onChange={handleChange}
           className={globalStyles.formInput}
-          required
         />
+        {errors.name && <p className={globalStyles.formError}>{errors.name.message}</p>}
+        
         <label className={globalStyles.formLabel} htmlFor="description">
           Descripción
         </label>
         <textarea
           id="description"
-          name="description"
-          value={form.description}
-          onChange={handleChange}
+          {...register("description")}
           className={globalStyles.formInput}
-          required
         />
+        {errors.description && <p className={globalStyles.formError}>{errors.description.message}</p>}
+        
         <label className={globalStyles.formLabel} htmlFor="amount">
           Stock
         </label>
         <input
           id="amount"
-          name="amount"
+          {...register("amount")}
           type="number"
-          value={form.amount}
-          onChange={handleChange}
           className={globalStyles.formInput}
           min={0}
-          required
         />
+        {errors.amount && <p className={globalStyles.formError}>{errors.amount.message}</p>}
+        
         <label className={globalStyles.formLabel} htmlFor="price">
           Precio (u$s)
         </label>
         <input
           id="price"
-          name="price"
+          {...register("price")}
           type="number"
-          value={form.price}
-          onChange={handleChange}
           className={globalStyles.formInput}
           min={0}
-          required
         />
+        {errors.price && <p className={globalStyles.formError}>{errors.price.message}</p>}
+        
         <label className={globalStyles.formLabel} htmlFor="ownerId">
           Propietario (opcional)
         </label>
         <input
           id="ownerId"
-          name="ownerId"
+          {...register("ownerId")}
           type="text"
-          value={form.ownerId}
-          onChange={handleChange}
           className={globalStyles.formInput}
         />
+        
         <label className={globalStyles.formLabel} htmlFor="image">
           Imagen (URL opcional)
         </label>
         <input
           id="image"
-          name="image"
+          {...register("image")}
           type="text"
-          value={form.image}
-          onChange={handleChange}
           className={globalStyles.formInput}
         />
+        
         <label className={globalStyles.formLabel} htmlFor="category">
           Categoría (ID)
         </label>
         <input
           id="category"
-          name="category"
+          {...register("category")}
           type="text"
-          value={form.category}
-          onChange={handleChange}
           className={globalStyles.formInput}
-          required
         />
+        {"category" in errors && <p className={globalStyles.formError}>{errors.category?.message}</p>}
+        
         <button
           type="submit"
           className={globalStyles.formButton}

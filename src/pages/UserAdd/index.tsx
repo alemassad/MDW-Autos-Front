@@ -1,32 +1,37 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import globalStyles from "../Pages.module.css";
 import { useSelector, useDispatch } from "../../store/store";
 import { addUser } from "../../slices/userAdd";
 import registraAuto from "../../assets/registraAuto.avif";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { userAddSchema } from "./validations";
+import type { User } from "../../types/user";
+
+type FormValues = Omit<User, "_id" | "isActive"> & { password: string };
 
 const UserAdd = () => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.reducer.userAdd);
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isAdmin, setAdmin] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<FormValues>({
+    resolver: joiResolver(userAddSchema),
+    defaultValues: { isAdmin: false },
+  });
+
+  const isAdmin = watch("isAdmin");
+
+  const onSubmit = (data: FormValues) => {
     dispatch(
       addUser({
-        name,
-        lastname,
-        birthdate,
-        email,
-        password,
-        isAdmin,
+        ...data,
         isActive: true,
       })
     ).then((result) => {
@@ -52,63 +57,66 @@ const UserAdd = () => {
       }}
     >
       <h1 className={globalStyles.title}>Agregar Usuario</h1>
-      <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+      <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}>
         <label className={globalStyles.formLabel} htmlFor="name">
           Nombre
         </label>
         <input
           id="name"
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          {...register("name")}
           placeholder="Ingresar nombre"
           className={globalStyles.formInput}
         />
+        {errors.name && <p className={globalStyles.formError}>{errors.name.message}</p>}
+
         <label className={globalStyles.formLabel} htmlFor="lastname">
           Apellido
         </label>
         <input
           id="lastname"
           type="text"
-          value={lastname}
-          onChange={(e) => setLastname(e.target.value)}
+          {...register("lastname")}
           placeholder="Ingresar apellido"
           className={globalStyles.formInput}
         />
+        {errors.lastname && <p className={globalStyles.formError}>{errors.lastname.message}</p>}
+
         <label className={globalStyles.formLabel} htmlFor="birthdate">
           Fecha de nacimiento
         </label>
         <input
           id="birthdate"
           type="date"
-          value={birthdate}
-          onChange={(e) => setBirthdate(e.target.value)}
+          {...register("birthdate")}
           className={globalStyles.formInput}
         />
+        {errors.birthdate && <p className={globalStyles.formError}>{errors.birthdate.message}</p>}
+
         <label className={globalStyles.formLabel} htmlFor="email">
           Email
         </label>
         <input
           id="email"
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          {...register("email")}
           placeholder="Ingresar email"
           className={globalStyles.formInput}
         />
+        {errors.email && <p className={globalStyles.formError}>{errors.email.message}</p>}
+
         <label className={globalStyles.formLabel} htmlFor="password">
           Contraseña
         </label>
         <input
           id="password"
           type="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
+          {...register("password")}
           placeholder="Ingresar contraseña"
           className={globalStyles.formInput}
         />
+        {errors.password && <p className={globalStyles.formError}>{errors.password.message}</p>}
+
         <label className={globalStyles.formLabel} htmlFor="isAdmin">
           ¿Es administrador?
         </label>
@@ -116,9 +124,7 @@ const UserAdd = () => {
           <input
             id="isAdmin"
             type="checkbox"
-            //value={isAdmin ? "true" : "false"}
-            checked={isAdmin}
-            onChange={(e) => setAdmin(e.target.checked)}
+            {...register("isAdmin")}
             className={globalStyles.formCheckbox}
           />
           <span

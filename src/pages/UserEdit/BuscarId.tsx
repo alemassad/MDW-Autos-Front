@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
 import miraAuto from "../../assets/miraAuto.webp";
-
-// Importar axios para hacer la consulta
 import axios from "../../config/axios";
 
 const BuscarUserId = () => {

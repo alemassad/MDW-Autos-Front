@@ -4,9 +4,16 @@ import { useDispatch, useSelector } from "../../store/store";
 import { deleteUserById, clearDeleteState } from "../../slices/userDelete";
 import deleteAuto from "../../assets/Eliminacion-autos.jpg";
 import Modal from "../../components/Modal";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { idSchema } from "./validations";
+import { getUsers } from "../../slices/users";
+
+type FormValues = {
+  id: string;
+};
 
 const UserDelete = () => {
-  const [inputId, setInputId] = useState("");
   const [isLogical, setIsLogical] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
@@ -14,22 +21,33 @@ const UserDelete = () => {
     (state) => state.reducer.userDelete
   );
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    getValues,
+  } = useForm<FormValues>({
+    resolver: joiResolver(idSchema),
+  });
+
   useEffect(() => {
     return () => {
       dispatch(clearDeleteState());
     };
   }, [dispatch]);
 
-  const handleOpenModal = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputId.trim()) return;
+  const handleOpenModal = (data: FormValues) => {
+    if (!data.id.trim()) return;
     setIsModalOpen(true);
   };
 
   const handleConfirmDelete = () => {
     dispatch(clearDeleteState());
-    dispatch(deleteUserById({ id: inputId.trim(), isLogical }));
-    setInputId("");
+    const id = getValues("id").trim();
+    dispatch(deleteUserById({ id, isLogical }));
+    dispatch(getUsers());
+    reset();
     setIsModalOpen(false);
   };
   return (
@@ -49,18 +67,20 @@ const UserDelete = () => {
         }}
       >
         <h1 className={globalStyles.title}>Eliminar Usuario por ID</h1>
-        <form onSubmit={handleOpenModal} className={globalStyles.formAuto}>
-          <label className={globalStyles.formLabel} htmlFor="userId">
+        <form onSubmit={handleSubmit(handleOpenModal)} className={globalStyles.formAuto}>
+          <label className={globalStyles.formLabel} htmlFor="id">
             ID del Usuario
           </label>
           <input
-            id="userId"
+            id="id"
             type="text"
-            value={inputId}
-            onChange={(e) => setInputId(e.target.value)}
-            placeholder="Ingrese el _id del usuario"
+            {...register("id")}
+            placeholder="Ingrese el ID del usuario"
             className={globalStyles.formInput}
           />
+          {errors.id && (
+            <p className={globalStyles.formError}>{errors.id.message}</p>
+          )}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
             <input
               type="checkbox"
@@ -94,7 +114,7 @@ const UserDelete = () => {
         onConfirm={handleConfirmDelete}
         title="Confirmar Operación"
       >
-        <p>¿Estás seguro de que deseas realizar esta acción?</p>
+        <p>¿Estás seguro de ELIMINAR el usuario?</p>
         <p><strong>Tipo de baja:</strong> {isLogical ? 'Lógica' : 'Física'}</p>
       </Modal>
     </>

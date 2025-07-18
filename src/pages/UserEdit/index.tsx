@@ -5,14 +5,27 @@ import { useParams, useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
 import type { User } from "../../types/user";
 import miraAuto from "../../assets/miraAuto.webp";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { userEditSchema } from "./validations";
 
 const UserEdit = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, loading, error, success } = useSelector(
-    (state) => state.reducer.userEdit);
-   
+    (state) => state.reducer.userEdit
+  );
+
+  const {
+    register,
+    handleSubmit,
+  
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: joiResolver(userEditSchema),
+  });
+
   const [form, setForm] = useState({
     name: "",
     lastname: "",
@@ -42,60 +55,37 @@ const UserEdit = () => {
     }
   }, [user]);
 
- const handleChange = (
-   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
- ) => {
-   const { name, value, type } = e.target;
-   const newValue =
-     type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
-   setForm({ ...form, [name]: newValue });
- };
-
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id) return;
-
-    let birthdateForApi: string | undefined;
-    if (form.birthdate) {
-            birthdateForApi = `${form.birthdate}T00:00:00`;
-    }
-
-    if (!form.name.trim() || !form.lastname.trim() || !form.email.trim()) {
-      return;
-    }
-    const data: Partial<Omit<User, "_id">> = {
-      name: form.name,
-      lastname: form.lastname,
-      birthdate: birthdateForApi,
-      email: form.email,
-      isAdmin: form.isAdmin,
-      isActive: form.isActive,
-    };
-    dispatch(editUser({ id, data }));
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type } = e.target;
+    const newValue =
+      type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+    setForm({ ...form, [name]: newValue });
   };
 
-  if (loading) {
-    return (
-      <div
-        className={globalStyles.container}
-        style={{
-          backgroundImage: `url(${miraAuto})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <h1 className={globalStyles.title}>Modificar Usuario</h1>
-        <h2 style={{ color: "#fff" }}>Cargando datos del usuario...</h2>
-      </div>
-    );
-  }
+  type FormData = {
+    name: string;
+    lastname: string;
+    birthdate: string;
+    email: string;
+    isAdmin: boolean;
+    isActive: boolean;
+  };
+
+  const onSubmit = (data: FormData) => {
+    if (!id) return;
+
+    const userData: Partial<Omit<User, "_id">> = {
+      name: data.name,
+      lastname: data.lastname,
+      birthdate: data.birthdate,
+      email: data.email,
+      isAdmin: data.isAdmin,
+      isActive: data.isActive,
+    };
+    dispatch(editUser({ id, data: userData }));
+  };
 
   return (
     <div
@@ -113,61 +103,86 @@ const UserEdit = () => {
       }}
     >
       <h1 className={globalStyles.title}>Modificar Usuario</h1>
-      <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+      <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}>
         <label className={globalStyles.formLabel} htmlFor="name">
           Nombre
         </label>
         <input
           id="name"
-          name="name"
+          {...register("name")}
           type="text"
           value={form.name}
           onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
+        {errors.name && (
+          <span className={globalStyles.formError}>{errors.name.message}</span>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="lastname">
           Apellido
         </label>
         <input
           id="lastname"
-          name="lastname"
+          {...register("lastname")}
           type="text"
           value={form.lastname}
           onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
+        {errors.lastname && (
+          <span className={globalStyles.formError}>
+            {errors.lastname.message}
+          </span>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="birthdate">
           Fecha de Nacimiento
         </label>
         <input
           id="birthdate"
-          name="birthdate"
+          {...register("birthdate")}
           type="date"
           value={form.birthdate}
           onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
+        {errors.birthdate && (
+          <span className={globalStyles.formError}>
+            {errors.birthdate.message}
+          </span>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="email">
           Email
         </label>
         <input
           id="email"
-          name="email"
+          {...register("email")}
           type="email"
           value={form.email}
           onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
+        {errors.email && (
+          <span className={globalStyles.formError}>{errors.email.message}</span>
+        )}
+
         <div
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "0.5rem 0" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0.5rem 0",
+          }}
         >
           <input
             id="isAdmin"
-            name="isAdmin"
+            {...register("isAdmin")}
             type="checkbox"
             checked={form.isAdmin}
             onChange={handleChange}
@@ -178,11 +193,16 @@ const UserEdit = () => {
           </label>
         </div>
         <div
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "0.5rem 0" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0.5rem 0",
+          }}
         >
           <input
             id="isActive"
-            name="isActive"
+            {...register("isActive")}
             type="checkbox"
             checked={form.isActive}
             onChange={handleChange}

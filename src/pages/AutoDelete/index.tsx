@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "../../store/store";
 import { deleteAutoById, clearDeleteState } from "../../slices/autoDelete";
 import deleteAuto from "../../assets/Eliminacion-autos.jpg";
 import Modal from "../../components/Modal";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { idSchema } from "./validations";
 
 const AutoDelete = () => {
   const [inputId, setInputId] = useState("");
@@ -13,6 +16,10 @@ const AutoDelete = () => {
   const { loading, success, error } = useSelector(
     (state) => state.reducer.autoDelete
   );
+
+  const { register, formState: { errors } } = useForm({
+    resolver: joiResolver(idSchema)
+  });
 
   useEffect(() => {
     return () => {
@@ -57,11 +64,13 @@ const AutoDelete = () => {
           <input
             id="autoId"
             type="text"
-            value={inputId}
-            onChange={(e) => setInputId(e.target.value)}
             placeholder="Ingrese el _id del auto"
             className={globalStyles.formInput}
+            {...register("autoId")}
           />
+          {typeof errors.autoId?.message === "string" && (
+            <p className={globalStyles.formError}>{errors.autoId.message}</p>
+          )}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
             <input
               type="checkbox"

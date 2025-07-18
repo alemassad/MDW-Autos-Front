@@ -1,52 +1,59 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import type { ChangeEvent } from "react";
 import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
 import loginAuto from "../../assets/loginAuto.webp";
 import api from "../../config/axios";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { loginSchema } from "./validations";
+
+type FormValues = {
+  email: string;
+  password: string;
+};
 
 const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<FormValues>({
+    resolver: joiResolver(loginSchema),
+  });
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: FormValues) => {
     setLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
-        email,
-        password
+        data.email,
+        data.password
       );
       const token = await userCredential.user.getIdToken();
 
       localStorage.setItem("token", token);
 
-      // Usar el nuevo endpoint
-      const response = await api.get(`/users/email/${email}`);
+      const response = await api.get(`/users/email/${data.email}`);
 
       localStorage.setItem(
         "user",
         JSON.stringify({
-          isAdmin: response.data.data.isAdmin || false,
+          isAdmin: response.data.isAdmin || false,
         })
       );
-
       navigate("/");
-    } catch (error) {
-      console.error("Error login:", error);
-      alert("Credenciales incorrectas o error del servidor");
+    } catch (error: unknown) {
+      const err = error as { message?: string };
+      setError("password", {
+        type: "manual",
+        message: err.message || "Credenciales incorrectas o error del servidor",
+      });
     } finally {
       setLoading(false);
     }
@@ -73,16 +80,22 @@ const Login = () => {
         {loading ? (
           <div className="spinner"></div>
         ) : (
-          <form onSubmit={handleLogin} className={globalStyles.formAuto}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={globalStyles.formAuto}
+          >
             <div className={globalStyles.formGroup}>
               <label htmlFor="email" className={globalStyles.formLabel}>
                 Email:
               </label>
               <input
                 type="email"
+                {...register("email")}
                 className={globalStyles.formInput}
-                onChange={handleEmailChange}
               />
+              {errors.email && (
+                <p className={globalStyles.formError}>{errors.email.message}</p>
+              )}
             </div>
             <div className={globalStyles.formGroup}>
               <label htmlFor="password" className={globalStyles.formLabel}>
@@ -90,9 +103,12 @@ const Login = () => {
               </label>
               <input
                 type="password"
+                {...register("password")}
                 className={globalStyles.formInput}
-                onChange={handlePasswordChange}
               />
+              {errors.password && (
+                <p className={globalStyles.formError}>{errors.password.message}</p>
+              )}
             </div>
             <button type="submit" className={globalStyles.formButton}>
               Login
