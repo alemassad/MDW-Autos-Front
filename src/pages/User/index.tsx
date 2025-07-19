@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../../App.css";
 import globalStyles from "../Pages.module.css";
 import { useSelector, useDispatch } from "../../store/store";
-import { getUserById } from "../../slices/user";
+import { getUserById, clearUser } from "../../slices/user";
 import userCar from "../../assets/userCar.jpg";
 import UserCard from "../../components/UserCard";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,10 @@ const UserBuscar = () => {
       dispatch(getUserById(paramId));
       setValue("userId", paramId);
     }
+
+    return () => {
+      dispatch(clearUser());
+    };
   }, [paramId, dispatch, setValue]);
 
   const onSubmit = (data: FormValues) => {
@@ -81,7 +85,7 @@ const UserBuscar = () => {
       {loading ? (
         <div className={globalStyles.spinner}></div>
       ) : error ? (
-        <p className={globalStyles.formError} style={{ textAlign: "center" }}>
+        <p className={globalStyles.formError}>
           {error}
         </p>
       ) : user ? (

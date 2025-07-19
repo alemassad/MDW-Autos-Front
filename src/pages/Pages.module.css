@@ -111,7 +111,7 @@
 
 .formLabel {
   font-weight: 600;
-  color: #5a85bb;
+  color: #9c270d;
   margin-bottom: 0.2rem;
 }
 
@@ -253,4 +253,12 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
+}
+.formSuccess{
+  display: flex;
+  color: #0dece1;
+  font-size: 1.2rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

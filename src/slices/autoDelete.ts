@@ -21,8 +21,13 @@ export const deleteAutoById = createAsyncThunk(
         await api.delete(`/cars/${id}`);
         return "Auto eliminado permanentemente (baja física).";
       }
-    } catch (err) {
-      return rejectWithValue("Error al procesar la solicitud: " + err);
+   } catch (error: unknown) {
+      const errorResponse = error as { response?: { data?: { message?: string } } };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al eliminar el auto";
+      return rejectWithValue(msg);
     }
   }
 );

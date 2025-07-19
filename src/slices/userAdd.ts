@@ -14,12 +14,18 @@ export const addUser = createAsyncThunk(
     try {
       const response = await api.post("/users", user);
       return response.data.data;
-    } catch (err) {
-      return rejectWithValue("Error al agregar usuario " + err);
+    } catch (error: unknown) {
+      const errorResponse = error as {
+        response?: { data?: { message?: string } };
+      };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al agrtegar usuario";
+      return rejectWithValue(msg);
     }
   }
 );
-
 const initialState: UserAddState = {
   user: null,
   loading: false,

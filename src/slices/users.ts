@@ -8,10 +8,18 @@ interface UsersState {
   error: string | undefined;
 }
 
-export const getUsers = createAsyncThunk("users/getUsers", async () => {
-  const response = await api.get("/users");
-  return response.data.data;
-});
+export const getUsers = createAsyncThunk(
+  "users/getUsers",
+  async (_: void, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/users");
+      return response.data.data;
+    } catch (error: unknown) {
+      const err = error as { message?: string };
+      return rejectWithValue(err.message || "Error al obtener usuarios");
+    }
+  }
+);
 
 const initialState: UsersState = {
   lista: [],

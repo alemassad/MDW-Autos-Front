@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "../../store/store";
 import { getAutoById, editAuto, clearEditState } from "../../slices/autoEdit";
 import { useParams, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { autoEditSchema } from "./validations";
 import globalStyles from "../Pages.module.css";
 import type { Auto } from "../../types/autos";
 import miraAuto from "../../assets/miraAuto.webp";
@@ -11,14 +14,23 @@ const AutoEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { auto, loading, error, success } = useSelector((state) => state.reducer.autoEdit);
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    amount: "",
-    price: "",
-    image: "",
-    ownerId: "",
-    isActive: true, 
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Omit<Auto, "_id">>({
+    resolver: joiResolver(autoEditSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      amount: 0,
+      price: 0,
+      image: "",
+      ownerId: "",
+      isActive: true,
+    },
   });
 
   useEffect(() => {
@@ -28,36 +40,20 @@ const AutoEdit = () => {
 
   useEffect(() => {
     if (auto) {
-      setForm({
+      reset({
         name: auto.name || "",
         description: auto.description || "",
-        amount: auto.amount?.toString() || "",
-        price: auto.price?.toString() || "",
+        amount: auto.amount ?? "",
+        price: auto.price ?? "",
         image: auto.image || "",
         ownerId: auto.ownerId || "",
         isActive: auto.isActive === undefined ? true : auto.isActive,
       });
     }
-  }, [auto]);
+  }, [auto, reset]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-    setForm({ ...form, [name]: newValue });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = (data: Omit<Auto, "_id">) => {
     if (!id) return;
-    const data: Partial<Omit<Auto, "_id">> = {
-      name: form.name,
-      description: form.description,
-      amount: Number(form.amount),
-      price: Number(form.price),
-      image: form.image,
-      ownerId: form.ownerId,
-      isActive: form.isActive,
-    };
     dispatch(editAuto({ id, data }));
   };
 
@@ -77,91 +73,85 @@ const AutoEdit = () => {
       }}
     >
       <h1 className={globalStyles.title}>Modificar Auto</h1>
-      <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+      <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}>
         <label className={globalStyles.formLabel} htmlFor="name">
           Nombre
         </label>
         <input
           id="name"
-          name="name"
+          {...register("name")}
           type="text"
-          value={form.name}
-          onChange={handleChange}
           className={globalStyles.formInput}
-          required
         />
+        {errors.name && <span className={globalStyles.formError}>{errors.name.message}</span>}
+
         <label className={globalStyles.formLabel} htmlFor="description">
           Descripción
         </label>
         <textarea
           id="description"
-          name="description"
-          value={form.description}
-          onChange={handleChange}
+          {...register("description")}
           className={globalStyles.formInput}
-          required
         />
+        {errors.description && <span className={globalStyles.formError}>{errors.description.message}</span>}
+
         <label className={globalStyles.formLabel} htmlFor="amount">
           Stock
         </label>
         <input
           id="amount"
-          name="amount"
+          {...register("amount")}
           type="number"
-          value={form.amount}
-          onChange={handleChange}
           className={globalStyles.formInput}
           min={0}
-          required
         />
+        {errors.amount && <span className={globalStyles.formError}>{errors.amount.message}</span>}
+
         <label className={globalStyles.formLabel} htmlFor="price">
           Precio (u$s)
         </label>
         <input
           id="price"
-          name="price"
+          {...register("price")}
           type="number"
-          value={form.price}
-          onChange={handleChange}
           className={globalStyles.formInput}
           min={0}
-          required
         />
+        {errors.price && <span className={globalStyles.formError}>{errors.price.message}</span>}
+
         <label className={globalStyles.formLabel} htmlFor="ownerId">
           Propietario (opcional)
         </label>
         <input
           id="ownerId"
-          name="ownerId"
+          {...register("ownerId")}
           type="text"
-          value={form.ownerId}
-          onChange={handleChange}
           className={globalStyles.formInput}
         />
+        {errors.ownerId && <span className={globalStyles.formError}>{errors.ownerId.message}</span>}
+
         <label className={globalStyles.formLabel} htmlFor="image">
           Imagen (URL opcional)
         </label>
         <input
           id="image"
-          name="image"
+          {...register("image")}
           type="text"
-          value={form.image}
-          onChange={handleChange}
           className={globalStyles.formInput}
         />
+        {errors.image && <span className={globalStyles.formError}>{errors.image.message}</span>}
+
         <div style={{ display: 'flex', alignItems: 'center', margin: '1rem 0' }}>
           <input
             id="isActive"
-            name="isActive"
+            {...register("isActive")}
             type="checkbox"
-            checked={form.isActive}
-            onChange={handleChange}
-            style={{ marginRight: '0.5rem' }}
+            className={globalStyles.formCheckbox}
           />
-          <label className={globalStyles.formLabel} htmlFor="isActive">
+          <label className={globalStyles.formLabel} htmlFor="isActive" style={{ marginLeft: 8 }}>
             Activo
           </label>
-        </div>       
+        </div>
         <button
           type="submit"
           className={globalStyles.formButton}

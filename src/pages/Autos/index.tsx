@@ -11,14 +11,11 @@ const Autos = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // Se podría modificar para que no se llame si ya hay autos,
-    // pero para el caso de la baja lógica, necesitamos refetchear para ver los cambios.
+  useEffect(() => {   
     dispatch(getAutos());
   }, [dispatch]);
 
-  // Filtra la lista para mostrar solo los autos activos
-  const activeAutos = lista.filter(auto => auto.isActive);
+    const activeAutos = lista.filter(auto => auto.isActive);
 
   return (
     <div
@@ -38,7 +35,7 @@ const Autos = () => {
       <h1 className={globalStyles.title}>Vehículos Disponibles</h1>
 
       {loading ? (
-        <h1>Loading...</h1>
+        <div className={globalStyles.spinner}></div>
       ) : (
         <div className="cardList">
           {activeAutos.map((auto) => (

@@ -21,8 +21,13 @@ export const deleteUserById = createAsyncThunk(
         await api.delete(`/users/${id}`);
         return "Usuario eliminado permanentemente (baja física).";
       }
-    } catch (err) {
-      return rejectWithValue("Error al eliminar el usuario " + err);
+    } catch (error: unknown) {
+      const errorResponse = error as { response?: { data?: { message?: string } } };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al eliminar usuario";
+      return rejectWithValue(msg);
     }
   }
 );

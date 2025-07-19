@@ -8,16 +8,18 @@ import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { autoAddSchema } from "./validations";
 
-// Use Omit<Auto, "_id"> directly for form data type
-
 const AutoAdd = () => {
   const dispatch = useDispatch();
   const { loading, success, error } = useSelector(
     (state) => state.reducer.autoAdd
   );
 
-  const { register, handleSubmit, formState: { errors } } = useForm<Omit<Auto, "_id" | "isActive"> & { category: string }>({
-    resolver: joiResolver(autoAddSchema)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Omit<Auto, "_id" | "isActive"> & { category: string }>({
+    resolver: joiResolver(autoAddSchema),
   });
 
   useEffect(() => {
@@ -34,8 +36,7 @@ const AutoAdd = () => {
       amount: Number(data.amount),
       price: Number(data.price),
       image: data.image,
-      category: data.category,
-      isActive: true,
+      category: data.category || "",
       ownerId: data.ownerId || "",
     };
     dispatch(addAuto(baseData));
@@ -67,8 +68,10 @@ const AutoAdd = () => {
           type="text"
           className={globalStyles.formInput}
         />
-        {errors.name && <p className={globalStyles.formError}>{errors.name.message}</p>}
-        
+        {errors.name && (
+          <p className={globalStyles.formError}>{errors.name.message}</p>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="description">
           Descripción
         </label>
@@ -77,8 +80,10 @@ const AutoAdd = () => {
           {...register("description")}
           className={globalStyles.formInput}
         />
-        {errors.description && <p className={globalStyles.formError}>{errors.description.message}</p>}
-        
+        {errors.description && (
+          <p className={globalStyles.formError}>{errors.description.message}</p>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="amount">
           Stock
         </label>
@@ -89,8 +94,10 @@ const AutoAdd = () => {
           className={globalStyles.formInput}
           min={0}
         />
-        {errors.amount && <p className={globalStyles.formError}>{errors.amount.message}</p>}
-        
+        {errors.amount && (
+          <p className={globalStyles.formError}>{errors.amount.message}</p>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="price">
           Precio (u$s)
         </label>
@@ -101,8 +108,10 @@ const AutoAdd = () => {
           className={globalStyles.formInput}
           min={0}
         />
-        {errors.price && <p className={globalStyles.formError}>{errors.price.message}</p>}
-        
+        {errors.price && (
+          <p className={globalStyles.formError}>{errors.price.message}</p>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="ownerId">
           Propietario (opcional)
         </label>
@@ -112,7 +121,10 @@ const AutoAdd = () => {
           type="text"
           className={globalStyles.formInput}
         />
-        
+        {errors.ownerId && (
+          <p className={globalStyles.formError}>{errors.ownerId.message}</p>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="image">
           Imagen (URL opcional)
         </label>
@@ -122,7 +134,10 @@ const AutoAdd = () => {
           type="text"
           className={globalStyles.formInput}
         />
-        
+        {errors.image && (
+          <p className={globalStyles.formError}>{errors.image.message}</p>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="category">
           Categoría (ID)
         </label>
@@ -132,8 +147,10 @@ const AutoAdd = () => {
           type="text"
           className={globalStyles.formInput}
         />
-        {"category" in errors && <p className={globalStyles.formError}>{errors.category?.message}</p>}
-        
+        {errors.category && (
+          <p className={globalStyles.formError}>{errors.category.message}</p>
+        )}
+
         <button
           type="submit"
           className={globalStyles.formButton}

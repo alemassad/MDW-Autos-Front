@@ -14,9 +14,10 @@ export const getUserById = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/users/${id}`);
-      return res.data.data; // Solo el objeto usuario
-    } catch (err) {
-      return rejectWithValue("Error al buscar el usuario " + err);
+      return res.data.data;
+    } catch (error: unknown) {
+      const err = error as { message?: string };
+      return rejectWithValue(err.message || "Error al obtener el usuario");
     }
   }
 );
@@ -27,12 +28,16 @@ export const editUser = createAsyncThunk(
     try {
       await api.patch(`/users/${id}`, data);
       return "Usuario modificado correctamente.";
-    } catch (err) {
-      return rejectWithValue("Error al modificar el Usuario "+ err);
+   } catch (error: unknown) {
+      const errorResponse = error as { response?: { data?: { message?: string } } };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al eliminar usuario";
+      return rejectWithValue(msg);
     }
   }
 );
-
 const initialState: UserEditState = {
   loading: false,
   success: null,

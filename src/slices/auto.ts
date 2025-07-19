@@ -8,12 +8,21 @@ interface AutoState {
   error: string | null;
 }
 
-export const getAutoById = createAsyncThunk("auto/getAutoById", async (id: string, { rejectWithValue }) => {
+export const getAutoById = createAsyncThunk(
+  "auto/getAutoById",
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await api.get(`/cars/${id}`);
       return response.data.data;
-    } catch (err) {
-      return rejectWithValue("Error al buscar auto "+ err);
+    } catch (error: unknown) {
+      const errorResponse = error as {
+        response?: { data?: { message?: string } };
+      };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al obtener el auto";
+      return rejectWithValue(msg);
     }
   }
 );
@@ -27,7 +36,11 @@ const initialState: AutoState = {
 const autoSlice = createSlice({
   name: "auto",
   initialState,
-  reducers: {},
+  reducers: {
+    clearAuto: (state) => {
+      state.auto = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAutoById.pending, (state) => {
@@ -42,10 +55,11 @@ const autoSlice = createSlice({
       .addCase(getAutoById.rejected, (state, action) => {
         state.loading = false;
         state.auto = null;
-        state.error = action.payload as string || "Error desconocido";
+        state.error = (action.payload as string) || "Error desconocido";
       });
   },
 });
 
+export const { clearAuto } = autoSlice.actions;
 export const autoReducer = autoSlice.reducer;
 export default autoReducer;

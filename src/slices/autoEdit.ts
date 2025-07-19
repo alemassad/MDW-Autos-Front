@@ -15,8 +15,13 @@ export const getAutoById = createAsyncThunk(
     try {
       const res = await api.get(`/cars/${id}`);
       return res.data.data; // Solo el objeto auto
-    } catch (err) {
-      return rejectWithValue("Error al buscar el auto "+ err);
+     } catch (error: unknown) {
+      const errorResponse = error as { response?: { data?: { message?: string } } };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al obtener el auto";
+      return rejectWithValue(msg);
     }
   }
 );
@@ -27,8 +32,13 @@ export const editAuto = createAsyncThunk(
     try {
       await api.patch(`/cars/${id}`, data);
       return "Auto modificado correctamente.";
-    } catch (err) {
-      return rejectWithValue("Error al modificar el auto "+ err);
+     } catch (error: unknown) {
+      const errorResponse = error as { response?: { data?: { message?: string } } };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al modificar el auto";
+      return rejectWithValue(msg);
     }
   }
 );

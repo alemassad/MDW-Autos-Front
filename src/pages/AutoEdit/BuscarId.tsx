@@ -1,29 +1,33 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { autoIdSchema } from "./validations";
 import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
 import miraAuto from "../../assets/miraAuto.webp";
 
-// Importar axios para hacer la consulta
 import axios from "../../config/axios";
 
 const BuscarId = () => {
-  const [inputId, setInputId] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<{ autoId: string }>({
+    resolver: joiResolver(autoIdSchema),
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    if (!inputId.trim()) return;
+  const onSubmit = async ({ autoId }: { autoId: string }) => {
     try {
-      const res = await axios.get(`/cars/${inputId.trim()}`);
+      const res = await axios.get(`/cars/${autoId.trim()}`);
       if (res.data && res.data.data) {
-        navigate(`/autos/modificar/${inputId.trim()}`);
+        navigate(`/autos/modificar/${autoId.trim()}`);
       } else {
-        setError("No se encontró un auto con ese ID.");
+        reset();
       }
     } catch {
-      setError("No se encontró un auto con ese ID.");
+      reset();
     }
   };
 
@@ -43,21 +47,20 @@ const BuscarId = () => {
       }}
     >
       <h1 className={globalStyles.title}>Modificar Auto por ID</h1>
-      <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
-        {error && (
-          <p className={globalStyles.formError} style={{ textAlign: "center" }}>{error}</p>
-        )}
+      <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}>
         <label className={globalStyles.formLabel} htmlFor="autoId">
           ID del auto
         </label>
         <input
           id="autoId"
           type="text"
-          value={inputId}
-          onChange={(e) => setInputId(e.target.value)}
+          {...register("autoId")}
           placeholder="Ingresar Id"
           className={globalStyles.formInput}
         />
+        {errors.autoId && (
+          <p className={globalStyles.formError}>{errors.autoId.message}</p>
+        )}
         <button type="submit" className={globalStyles.formButton}>
           Buscar
         </button>

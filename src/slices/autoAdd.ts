@@ -14,12 +14,18 @@ export const addAuto = createAsyncThunk(
     try {
       await api.post("/cars", auto);
       return "Auto agregado correctamente.";
-    } catch (err) {
-      return rejectWithValue("Error al agregar el auto "+ err);
+    } catch (error: unknown) {
+      const errorResponse = error as {
+        response?: { data?: { message?: string } };
+      };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al agregar el auto";
+      return rejectWithValue(msg);
     }
   }
 );
-
 const initialState: AutoAddState = {
   loading: false,
   success: null,
@@ -51,7 +57,7 @@ const autoAddSlice = createSlice({
       .addCase(addAuto.rejected, (state, action) => {
         state.loading = false;
         state.success = null;
-        state.error = action.payload as string || "Error desconocido";
+        state.error = (action.payload as string) || "Error desconocido";
       });
   },
 });

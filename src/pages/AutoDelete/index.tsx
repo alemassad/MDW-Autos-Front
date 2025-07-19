@@ -9,17 +9,16 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { idSchema } from "./validations";
 
 const AutoDelete = () => {
-  const [inputId, setInputId] = useState("");
+  const { register, formState: { errors }, getValues, reset } = useForm<{ autoId: string }>({
+    resolver: joiResolver(idSchema)
+  });
+
   const [isLogical, setIsLogical] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { loading, success, error } = useSelector(
     (state) => state.reducer.autoDelete
   );
-
-  const { register, formState: { errors } } = useForm({
-    resolver: joiResolver(idSchema)
-  });
 
   useEffect(() => {
     return () => {
@@ -29,14 +28,14 @@ const AutoDelete = () => {
 
   const handleOpenModal = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputId.trim()) return;
+    if (!getValues("autoId").trim()) return;
     setIsModalOpen(true);
   };
 
   const handleConfirmDelete = () => {
     dispatch(clearDeleteState());
-    dispatch(deleteAutoById({ id: inputId.trim(), isLogical }));
-    setInputId("");
+    dispatch(deleteAutoById({ id: getValues("autoId").trim(), isLogical }));
+    reset();
     setIsModalOpen(false);
   };
 
@@ -68,7 +67,7 @@ const AutoDelete = () => {
             className={globalStyles.formInput}
             {...register("autoId")}
           />
-          {typeof errors.autoId?.message === "string" && (
+          {errors.autoId && (
             <p className={globalStyles.formError}>{errors.autoId.message}</p>
           )}
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>

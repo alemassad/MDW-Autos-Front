@@ -12,10 +12,8 @@ const Users = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!lista.length) {
-      dispatch(getUsers());
-    }
-  }, [dispatch, lista]);
+    dispatch(getUsers());
+  }, [dispatch]);
   const activeUsers = lista.filter((user) => user.isActive);
 
   return (

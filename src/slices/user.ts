@@ -8,12 +8,21 @@ interface UserState {
   error: string | null;
 }
 
-export const getUserById = createAsyncThunk("user/getUserById", async (id: string, { rejectWithValue }) => {
+export const getUserById = createAsyncThunk(
+  "user/getUserById",
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await api.get(`/users/${id}`);
       return response.data.data;
-    } catch (err) {
-      return rejectWithValue("Error al buscar usuario "+ err);
+    } catch (error: unknown) {
+      const errorResponse = error as {
+        response?: { data?: { message?: string } };
+      };
+      const msg =
+        errorResponse.response?.data?.message ||
+        (error as Error).message ||
+        "Error al eliminar usuario";
+      return rejectWithValue(msg);
     }
   }
 );
@@ -27,7 +36,13 @@ const initialState: UserState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUser: (state) => {
+      state.user = null;
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUserById.pending, (state) => {
@@ -42,10 +57,11 @@ const userSlice = createSlice({
       .addCase(getUserById.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
-        state.error = action.payload as string || "Error desconocido";
+        state.error = (action.payload as string) || "Error desconocido";
       });
   },
 });
 
+export const { clearUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 export default userReducer;
