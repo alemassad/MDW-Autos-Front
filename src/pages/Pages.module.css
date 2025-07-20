@@ -3,15 +3,15 @@
   min-width: 90vw;
   max-width: 100vw;
   min-height: 100vh;
-  margin: 1vh;
-  padding: 1vh;
+  margin: 1px;
+  padding: 1px;
   border-radius: 1px;
   box-shadow: none;
-  background: #9ceede54;
+  background: #18362f; /* Quitada la transparencia */
   display: flex;
   flex-direction: column;
   justify-content: flex-start !important;
-  padding-top: 2h !important;
+  padding-top: 1h !important;
 }
 
 .main {
@@ -37,7 +37,7 @@
   line-height: 1.6;
   max-width: 800px;
   margin: 0 auto;
-  background: rgba(246, 82, 82, 0.066);
+  background: #f65252; /* Quitada la transparencia */
   padding: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -52,7 +52,7 @@
   text-align: start;
   max-width: 800px;
   margin: 0 auto;
-  background: rgba(82, 246, 153, 0.208);
+  background: #52f699; /* Quitada la transparencia */
   padding: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -87,7 +87,7 @@
 }
 
 .formAuto {
-  background: #d5f5d860;
+  background: #d5f5d8; /* Quitada la transparencia */
   border-radius: 16px;
   box-shadow: 0 4px 24px #0002;
   padding: 1rem 2.5rem;

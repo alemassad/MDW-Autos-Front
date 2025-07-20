@@ -2,9 +2,9 @@
   width: 240px;
   padding: 10px;
   border-radius: 5px;
-  background-color: #fb9e4d46;
-  border: 1px solid #25edd2;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #e2e9f5f6; /* Fondo suave y agradable */
+  border: 1px solid #113047;
+  box-shadow: 0 4px 8px #cbd5e1;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -13,7 +13,7 @@
 
 .categoryCardContainer:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px #a5b4fc;
 }
 
 .categoryName {
