@@ -159,6 +159,7 @@ const AutoEdit = () => {
         >
           {loading ? "Modificando..." : "Modificar Auto"}
         </button>
+        {loading && <div className={globalStyles.spinner}></div>}
       </form>
       {error && (
         <p className={globalStyles.formError} style={{ textAlign: "center" }}>

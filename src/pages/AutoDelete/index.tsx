@@ -89,6 +89,7 @@ const AutoDelete = () => {
           >
             {loading ? "Procesando..." : "Eliminar"}
           </button>
+          {loading && <div className={globalStyles.spinner}></div>}
           {success && (
             <p className={globalStyles.formError} style={{ color: "#22c55e" }}>
               {success}

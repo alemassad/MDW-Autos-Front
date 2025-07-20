@@ -1,31 +1,28 @@
-// File: src/slices/categoryAdd.ts
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../config/axios";
 import type { Category } from "../types/category";
 
-// Define el estado para la operación de agregar categoría
+
 interface CategoryAddState {
   loading: boolean;
   success: string | null;
   error: string | null;
 }
 
-// Thunk asíncrono para agregar una nueva categoría
-// Omitimos '_id' y 'cars' ya que no se envían al crear una categoría
 export const addCategory = createAsyncThunk(
   "categoryAdd/addCategory",
   async (
-    category: Omit<Category, "_id" | "cars">, // Omitimos '_id' y 'cars' ya que no se envían al crear una categoría
+    category: Omit<Category, "_id" | "cars">,
     { rejectWithValue }
   ) => {
     try {
       const response = await api.post("/categories", category);
-      // Asumiendo que la API devuelve la categoría creada o un mensaje de éxito
       return response.data.message || "Categoría agregada correctamente.";
-    } catch (err) {
-      console.log("Error al agregar la categoría:", err);
-
-      return rejectWithValue(err || "Error al agregar la categoría.");
+    } catch (err: unknown) {
+      const errorResponse = err as { response?: { data?: { message?: string } } };
+      const msg =
+        errorResponse.response?.data?.message || "Error al agregar la categoría.";
+      return rejectWithValue(msg);
     }
   }
 );
@@ -36,7 +33,6 @@ const initialState: CategoryAddState = {
   error: null,
 };
 
-// Creación del slice de Redux
 const categoryAddSlice = createSlice({
   name: "categoryAdd",
   initialState,

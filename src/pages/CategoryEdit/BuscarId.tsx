@@ -1,11 +1,10 @@
-// File: src/pages/CategoryEdit/BuscarId.tsx
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
-import categoryImage from "../../assets/autoreuters.jpg"; // Puedes usar una imagen relevante para categorías
-
-// Importar axios para hacer la consulta
+import categoryImage from "../../assets/autoreuters.jpg";
 import axios from "../../config/axios";
+import { categoryIdSchema } from "./validations"; 
 
 const BuscarIdCategory = () => {
   const [inputId, setInputId] = useState("");
@@ -15,7 +14,15 @@ const BuscarIdCategory = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!inputId.trim()) return;
+
+    const { error: joiError } = categoryIdSchema.validate({
+      autoId: inputId.trim(),
+    });
+    if (joiError) {
+      setError(joiError.message);
+      return;
+    }
+
     try {
       const res = await axios.get(`/categories/${inputId.trim()}`);
       if (res.data && res.data.data) {

@@ -1,60 +1,47 @@
 // File: src/pages/CategoryAdd/index.tsx
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import globalStyles from "../Pages.module.css"; // Reutiliza los estilos globales
 import { useDispatch, useSelector } from "../../store/store";
 import { addCategory, clearAddState } from "../../slices/categoryAdd"; // Importa el nuevo slice
-import type { Category } from "../../types/category" // Importa el tipo Category
 import categoryImage from "../../assets/autoreuters.jpg"; // Puedes usar una imagen relevante para categorías
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { categoryAddSchema } from "./validations";
 
 const CategoryAdd = () => {
-  // Estado local para los campos del formulario de categoría
-  const [form, setForm] = useState<Omit<Category, "_id" | "cars">>({
-    name: "",
-    description: "",
-    isActive: true,
-  });
-
   const dispatch = useDispatch();
-  // Selecciona el estado relevante del nuevo slice categoryAdd
   const { loading, success, error } = useSelector(
     (state) => state.reducer.categoryAdd
   );
 
-  // Limpia el estado de éxito/error al desmontar el componente
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<{ name: string; description: string; isActive?: boolean }>({
+    resolver: joiResolver(categoryAddSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      isActive: true,
+    },
+  });
+
   useEffect(() => {
     return () => {
       dispatch(clearAddState());
     };
   }, [dispatch]);
 
-  // Manejador de cambios para los inputs del formulario
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  // Manejador de envío del formulario
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch(clearAddState()); // Limpia cualquier estado previo antes de un nuevo envío
-
-    // Validación básica de campos
-    if (!form.name.trim() || !form.description.trim()) {
-      // Podrías despachar un error local o mostrar un mensaje al usuario
-      console.error("Nombre y descripción son obligatorios.");
-      return;
-    }
-
-    // Despacha la acción para agregar la categoría
-    dispatch(addCategory(form));
-
-    // Reinicia el formulario después del envío
-    setForm({
-      name: "",
-      description: "",
-      isActive: true,
-    });
+  const onSubmit = (data: {
+    name: string;
+    description: string;
+    isActive?: boolean;
+  }) => {
+    dispatch(clearAddState());
+    dispatch(addCategory(data));
+    reset();
   };
 
   return (
@@ -70,54 +57,69 @@ const CategoryAdd = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "20px", // Añadido para mejor espaciado en pantallas pequeñas
+        padding: "20px",
       }}
     >
       <h1 className={globalStyles.title}>Agregar Nueva Categoría</h1>
-      <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+      <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}>
         <label className={globalStyles.formLabel} htmlFor="name">
           Nombre de la Categoría
         </label>
         <input
           id="name"
-          name="name"
+          {...register("name")}
           type="text"
-          value={form.name}
-          onChange={handleChange}
           className={globalStyles.formInput}
-          required
         />
+        {errors.name && (
+          <p className={globalStyles.formError}>{errors.name.message}</p>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="description">
           Descripción
         </label>
         <textarea
           id="description"
-          name="description"
-          value={form.description}
-          onChange={handleChange}
+          {...register("description")}
           className={globalStyles.formInput}
-          required
         />
+        {errors.description && (
+          <p className={globalStyles.formError}>{errors.description.message}</p>
+        )}
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            margin: "1rem 0",
+          }}
+        >
+          <input
+            id="isActive"
+            {...register("isActive")}
+            type="checkbox"
+            defaultChecked={true}
+            className={globalStyles.formCheckbox}
+          />
+          <label
+            className={globalStyles.formLabel}
+            htmlFor="isActive"
+          >
+            ¿Categoría activa?
+          </label>
+        </div>
+
         <button
           type="submit"
           className={globalStyles.formButton}
-          disabled={loading} // Deshabilita el botón mientras se carga
+          disabled={loading}
         >
           {loading ? "Agregando..." : "Agregar Categoría"}
         </button>
+        {loading && <div className={globalStyles.spinner}></div>}
       </form>
-
-      {/* Muestra mensajes de error o éxito */}
-      {error && (
-        <p className={globalStyles.formError} style={{ textAlign: "center" }}>
-          {error}
-        </p>
-      )}
-      {success && (
-        <p className={globalStyles.formSuccess} style={{ textAlign: "center" }}>
-          {success}
-        </p>
-      )}
+      {error && <p className={globalStyles.formError}>{error}</p>}
+      {success && <p className={globalStyles.formSuccess}>{success}</p>}
     </div>
   );
 };

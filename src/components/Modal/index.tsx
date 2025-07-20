@@ -19,7 +19,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm, title, childr
         <div className={styles.content}>{children}</div>
         <div className={styles.actions}>
           <button onClick={onClose} className={`${styles.button} ${styles.cancel}`}>Cancelar</button>
-          <button onClick={onConfirm} className={`${styles.button} ${styles.confirm}`}>Confirmar</button>
+          <button onClick={onConfirm} className={`${styles.button} ${styles.confirm}`}>Borrar</button>
         </div>
       </div>
     </div>

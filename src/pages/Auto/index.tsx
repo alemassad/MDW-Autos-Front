@@ -37,6 +37,10 @@ const Auto = () => {
     };
   }, [paramId, dispatch, setValue]);
 
+  useEffect(() => {
+    dispatch(clearAuto());
+  }, [dispatch]);
+
   const onSubmit = (data: FormValues) => {
     if (data.autoId.trim()) {
       navigate(`/autos/${data.autoId.trim()}`);
@@ -84,37 +88,43 @@ const Auto = () => {
           {error}
         </p>
       ) : auto ? (
-        <div className={globalStyles.formAuto} style={{ marginTop: "2rem" }}>
-          <h2 style={{ textAlign: "center" }}>{auto.name}</h2>
-          <p>
-            <b>ID:</b> {auto._id}
-          </p>
-          <p>
-            <b>Descripción:</b> {auto.description}
-          </p>
-          <p>
-            <b>Stock:</b> {auto.amount}
-          </p>
-          <p>
-            <b>Precio:</b> u$s {auto.price}
-          </p>
-          {auto.ownerId && (
+        auto.isActive ? (
+          <div className={globalStyles.formAuto} style={{ marginTop: "2rem" }}>
+            <h2 style={{ textAlign: "center" }}>{auto.name}</h2>
             <p>
-              <b>Propietario:</b> {auto.ownerId}
+              <b>ID:</b> {auto._id}
             </p>
-          )}
-          {auto.image && (
-            <img
-              src={auto.image}
-              alt={auto.name}
-              style={{
-                width: "100%",
-                borderRadius: 8,
-                marginTop: 8,
-              }}
-            />
-          )}
-        </div>
+            <p>
+              <b>Descripción:</b> {auto.description}
+            </p>
+            <p>
+              <b>Stock:</b> {auto.amount}
+            </p>
+            <p>
+              <b>Precio:</b> u$s {auto.price}
+            </p>
+            {auto.ownerId && (
+              <p>
+                <b>Propietario:</b> {auto.ownerId}
+              </p>
+            )}
+            {auto.image && (
+              <img
+                src={auto.image}
+                alt={auto.name}
+                style={{
+                  width: "100%",
+                  borderRadius: 8,
+                  marginTop: 8,
+                }}
+              />
+            )}
+          </div>
+        ) : (
+          <p className={globalStyles.formError} style={{ textAlign: "center" }}>
+            El auto no está activo.
+          </p>
+        )
       ) : null}
     </div>
   );

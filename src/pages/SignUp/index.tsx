@@ -25,6 +25,7 @@ const SignUp = () => {
   } = useForm<FormValues>({ resolver: joiResolver(signUpSchema) });
 
   const handleSignUp = handleSubmit(async (data) => {
+    setLoading(true); // <-- Agrega esto
     try {
       await createUserWithEmailAndPassword(auth, data.email, data.password);
       setTimeout(() => {

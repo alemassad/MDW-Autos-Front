@@ -34,7 +34,7 @@ const Users = () => {
       <h1 className={globalStyles.title}>Usuarios</h1>
 
       {loading ? (
-        <h1>Loading...</h1>
+        <div className={globalStyles.spinner}></div>
       ) : (
         <div className="cardList">
           {activeUsers.map((user) => (

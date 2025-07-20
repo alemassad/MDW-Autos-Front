@@ -113,6 +113,7 @@
   font-weight: 600;
   color: #9c270d;
   margin-bottom: 0.2rem;
+  margin-left: 8px;
 }
 
 .formInput {
@@ -155,6 +156,7 @@
   margin-top: 0.2rem;
   margin-bottom: 0;
   padding-left: 2px;
+  text-align: center;
 }
 
 .buttonGroup {
@@ -261,4 +263,5 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }

@@ -11,13 +11,10 @@ const Categories = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    
-      dispatch(getCategories());
-    
+    dispatch(getCategories());
   }, [dispatch]);
 
- 
-   const activeCategories = lista.filter((categories) => categories.isActive);
+  const activeCategories = lista.filter((categories) => categories.isActive);
 
   return (
     <div
@@ -38,7 +35,7 @@ const Categories = () => {
       <h1 className={globalStyles.title}>Categorías de Vehículos</h1>
 
       {loading ? (
-        <h1>Loading...</h1>
+        <div className={globalStyles.spinner}></div>
       ) : (
         <div className="cardList">
           {activeCategories.map((categories) => (

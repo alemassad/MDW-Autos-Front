@@ -1,75 +1,65 @@
-// File: src/pages/CategoryEdit/index.tsx
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "../../store/store";
-import { getCategoryById, editCategory, clearEditState } from "../../slices/categoryEdit"; // Importa el nuevo slice
+import {
+  getCategoryById,
+  editCategory,
+  clearEditState,
+} from "../../slices/categoryEdit";
 import { useParams, useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
-import type { Category } from "../../types/category";
-import categoryImage from "../../assets/autoreuters.jpg"; // Puedes usar una imagen relevante para categorías
+import categoryImage from "../../assets/autoreuters.jpg";
+import { useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { categoryEditSchema } from "./validations";
 
-const CategoryEdit = () => {
-  const { id } = useParams(); // Obtiene el ID de la URL
+type FormData = {
+  name: string;
+  description: string;
+  isActive: boolean;
+};
+
+const CategoryEdit = () => {  
+  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
   const { category, loading, error, success } = useSelector(
     (state) => state.reducer.categoryEdit
   );
 
-    const [form, setForm] = useState<Omit<Category, "_id" | "cars">>({
-    name: "",
-    description: "",
-    isActive: true,
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: joiResolver(categoryEditSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      isActive: true,
+    },
   });
 
- 
   useEffect(() => {
-    if (id) {
-      dispatch(getCategoryById(id));
-    }
+    if (id) dispatch(getCategoryById(id));
     return () => {
       dispatch(clearEditState());
     };
   }, [id, dispatch]);
 
-  // Efecto para poblar el formulario cuando la categoría se carga
   useEffect(() => {
     if (category) {
-      setForm({
+      reset({
         name: category.name || "",
         description: category.description || "",
-        isActive: category.isActive === undefined ? true : category.isActive,
+        isActive: typeof category.isActive === "boolean" ? category.isActive : true,
       });
     }
-  }, [category]);
+  }, [category, reset]);
 
-  // Manejador de cambios para los inputs del formulario
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, type } = e.target;
-    const newValue = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
-    setForm({ ...form, [name]: newValue });
-  };
-
-  // Manejador de envío del formulario
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id) return; // Asegura que hay un ID para editar
-
-    // Validación básica de campos
-    if (!form.name.trim() || !form.description.trim()) {
-      // Podrías despachar un error local o mostrar un mensaje al usuario
-      console.error("Nombre y descripción son obligatorios.");
-      return;
-    }
-
-    // Despacha la acción para modificar la categoría
-    const data: Partial<Omit<Category, "_id" | "cars"| "isActive">> = {
-      name: form.name,
-      description: form.description,
-      //isActive: form.isActive,
-    };
+  const onSubmit = (data: FormData) => {
+    console.log("SUBMIT DATA", data);
+    if (!id) return;
     dispatch(editCategory({ id, data }));
   };
 
@@ -86,44 +76,66 @@ const CategoryEdit = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "20px",
       }}
     >
       <h1 className={globalStyles.title}>Modificar Categoría</h1>
-      <form onSubmit={handleSubmit} className={globalStyles.formAuto}>
+      <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}>
         <label className={globalStyles.formLabel} htmlFor="name">
           Nombre de la Categoría
         </label>
         <input
           id="name"
-          name="name"
+          {...register("name")}
           type="text"
-          value={form.name}
-          onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
+        {errors.name && (
+          <span className={globalStyles.formError}>{errors.name.message}</span>
+        )}
+
         <label className={globalStyles.formLabel} htmlFor="description">
           Descripción
         </label>
         <textarea
           id="description"
-          name="description"
-          value={form.description}
-          onChange={handleChange}
+          {...register("description")}
           className={globalStyles.formInput}
           required
-        />        
+        />
+        {errors.description && (
+          <span className={globalStyles.formError}>
+            {errors.description.message}
+          </span>
+        )}
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "0.5rem 0",
+          }}
+        >
+          <input
+            id="isActive"
+            {...register("isActive")}
+            type="checkbox"
+            className={globalStyles.formCheckbox}
+          />
+          <label className={globalStyles.formLabel} htmlFor="isActive">
+            ¿Categoría Activa?
+          </label>
+        </div>
         <button
           type="submit"
           className={globalStyles.formButton}
-          disabled={loading} // Deshabilita el botón mientras se carga
+          disabled={loading}
         >
           {loading ? "Modificando..." : "Modificar Categoría"}
         </button>
+        {loading && <div className={globalStyles.spinner}></div>}
       </form>
-
-      {/* Muestra mensajes de error o éxito */}
       {error && (
         <p className={globalStyles.formError} style={{ textAlign: "center" }}>
           {error}
@@ -134,11 +146,10 @@ const CategoryEdit = () => {
           {success}
         </p>
       )}
-
       <button
         className={globalStyles.formButton}
         style={{ marginTop: 16 }}
-        onClick={() => navigate(-1)} // Botón para volver a la página anterior
+        onClick={() => navigate(-1)}
       >
         Volver
       </button>

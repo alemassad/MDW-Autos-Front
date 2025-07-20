@@ -89,12 +89,18 @@ const UserBuscar = () => {
           {error}
         </p>
       ) : user ? (
-        <div
-          className={globalStyles.userCardContainer}
-          style={{ marginTop: "20px" }}
-        >
-          <UserCard user={user} />
-        </div>
+        user.isActive ? (
+          <div
+            className={globalStyles.userCardContainer}
+            style={{ marginTop: "20px" }}
+          >
+            <UserCard user={user} />
+          </div>
+        ) : (
+          <p className={globalStyles.formError} style={{ textAlign: "center" }}>
+            El usuario no está activo.
+          </p>
+        )
       ) : null}
     </div>
   );

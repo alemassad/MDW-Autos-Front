@@ -39,6 +39,7 @@ const autoSlice = createSlice({
   reducers: {
     clearAuto: (state) => {
       state.auto = null;
+      state.error = null;
     },
   },
   extraReducers: (builder) => {

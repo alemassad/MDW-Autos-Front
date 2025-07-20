@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "../../store/store";
 import { getUserById, editUser, clearEditState } from "../../slices/userEdit";
 import { useParams, useNavigate } from "react-router-dom";
@@ -16,23 +16,21 @@ const UserEdit = () => {
   const { user, loading, error, success } = useSelector(
     (state) => state.reducer.userEdit
   );
-
   const {
     register,
     handleSubmit,
-  
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     resolver: joiResolver(userEditSchema),
-  });
-
-  const [form, setForm] = useState({
-    name: "",
-    lastname: "",
-    birthdate: "",
-    email: "",
-    isAdmin: false,
-    isActive: true,
+    defaultValues: {
+      name: "",
+      lastname: "",
+      birthdate: "",
+      email: "",
+      isAdmin: false,
+      isActive: true,
+    },
   });
 
   useEffect(() => {
@@ -44,25 +42,16 @@ const UserEdit = () => {
 
   useEffect(() => {
     if (user) {
-      setForm({
+      reset({
         name: user.name || "",
         lastname: user.lastname || "",
         birthdate: user.birthdate ? user.birthdate.split("T")[0] : "",
         email: user.email || "",
-        isAdmin: user.isAdmin || false,
+        isAdmin: !!user.isAdmin,
         isActive: user.isActive === undefined ? true : user.isActive,
       });
     }
-  }, [user]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value, type } = e.target;
-    const newValue =
-      type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
-    setForm({ ...form, [name]: newValue });
-  };
+  }, [user, reset]);
 
   type FormData = {
     name: string;
@@ -111,8 +100,6 @@ const UserEdit = () => {
           id="name"
           {...register("name")}
           type="text"
-          value={form.name}
-          onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
@@ -127,8 +114,6 @@ const UserEdit = () => {
           id="lastname"
           {...register("lastname")}
           type="text"
-          value={form.lastname}
-          onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
@@ -145,8 +130,6 @@ const UserEdit = () => {
           id="birthdate"
           {...register("birthdate")}
           type="date"
-          value={form.birthdate}
-          onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
@@ -163,8 +146,6 @@ const UserEdit = () => {
           id="email"
           {...register("email")}
           type="email"
-          value={form.email}
-          onChange={handleChange}
           className={globalStyles.formInput}
           required
         />
@@ -184,9 +165,7 @@ const UserEdit = () => {
             id="isAdmin"
             {...register("isAdmin")}
             type="checkbox"
-            checked={form.isAdmin}
-            onChange={handleChange}
-            style={{ marginRight: "0.5rem" }}
+            className={globalStyles.formCheckbox}
           />
           <label className={globalStyles.formLabel} htmlFor="isAdmin">
             ¿Es Administrador?
@@ -204,9 +183,7 @@ const UserEdit = () => {
             id="isActive"
             {...register("isActive")}
             type="checkbox"
-            checked={form.isActive}
-            onChange={handleChange}
-            style={{ marginRight: "0.5rem" }}
+            className={globalStyles.formCheckbox}
           />
           <label className={globalStyles.formLabel} htmlFor="isActive">
             ¿Usuario Activo?
@@ -220,6 +197,7 @@ const UserEdit = () => {
         >
           {loading ? "Modificando..." : "Modificar User"}
         </button>
+        {loading && <div className={globalStyles.spinner}></div>}
       </form>
       {error && (
         <p className={globalStyles.formError} style={{ textAlign: "center" }}>

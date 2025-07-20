@@ -143,6 +143,7 @@ const UserAdd = () => {
         </button>
         {error && <p className={globalStyles.formError}>{error}</p>}
       </form>
+      {loading && <div className={globalStyles.spinner}></div>}
     </div>
   );
 };

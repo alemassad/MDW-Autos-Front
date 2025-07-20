@@ -158,6 +158,7 @@ const AutoAdd = () => {
         >
           {loading ? "Agregando..." : "Agregar Auto"}
         </button>
+        {loading && <div className={globalStyles.spinner}></div>}
       </form>
 
       {error && (
