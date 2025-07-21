@@ -13,6 +13,7 @@ import { userReducer } from "../slices/user";
 import userAddReducer from "../slices/userAdd";
 import { userEditReducer } from "../slices/userEdit";
 import userDeleteReducer from "../slices/userDelete";
+import { categoryReducer } from "../slices/category";
 
 const rootReducer = combineReducers({
   autos: autosReducer,
@@ -21,13 +22,14 @@ const rootReducer = combineReducers({
   autoAdd: autoAddReducer,
   autoEdit: autoEditReducer,
   categories: categoriesReducer,
+  category: categoryReducer,
   categoryAdd: categoryAddReducer,
   categoryEdit: categoryEditReducer,
   categoryDelete: categoryDeleteReducer,
   users: usersReducer,
   user: userReducer,
   userAdd: userAddReducer,
-  userEdit:userEditReducer,
+  userEdit: userEditReducer,
   userDelete: userDeleteReducer,
 });
 

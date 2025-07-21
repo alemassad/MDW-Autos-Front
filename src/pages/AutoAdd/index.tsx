@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import globalStyles from "../Pages.module.css";
 import { useDispatch, useSelector } from "../../store/store";
 import { addAuto, clearAddState } from "../../slices/autoAdd";
+import { getCategories } from "../../slices/categories";
+import { getUsers } from "../../slices/users";
 import type { Auto } from "../../types/autos";
 import joven from "../../assets/joven.avif";
 import { useForm } from "react-hook-form";
@@ -13,6 +15,12 @@ const AutoAdd = () => {
   const { loading, success, error } = useSelector(
     (state) => state.reducer.autoAdd
   );
+  const { lista: categorias, loading: loadingCategorias } = useSelector(
+    (state) => state.reducer.categories
+  );
+  const { lista: users, loading: loadingUsers } = useSelector(
+    (state) => state.reducer.users
+  );
 
   const {
     register,
@@ -23,6 +31,8 @@ const AutoAdd = () => {
   });
 
   useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getUsers());
     return () => {
       dispatch(clearAddState());
     };
@@ -115,12 +125,21 @@ const AutoAdd = () => {
         <label className={globalStyles.formLabel} htmlFor="ownerId">
           Propietario (opcional)
         </label>
-        <input
+        <select
           id="ownerId"
           {...register("ownerId")}
-          type="text"
           className={globalStyles.formInput}
-        />
+          disabled={loadingUsers}
+        >
+          <option value="">Propietario?</option>
+          {users
+            .filter((user) => user.isActive)
+            .map((user) => (
+              <option key={user._id} value={user._id}>
+                {user.name} {user.lastname}
+              </option>
+            ))}
+        </select>
         {errors.ownerId && (
           <p className={globalStyles.formError}>{errors.ownerId.message}</p>
         )}
@@ -139,14 +158,23 @@ const AutoAdd = () => {
         )}
 
         <label className={globalStyles.formLabel} htmlFor="category">
-          Categoría (ID)
+          Categoría
         </label>
-        <input
+        <select
           id="category"
           {...register("category")}
-          type="text"
           className={globalStyles.formInput}
-        />
+          disabled={loadingCategorias}
+        >
+          <option value="">Categoría?</option>
+          {categorias
+            .filter((cat) => cat.isActive)
+            .map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+        </select>
         {errors.category && (
           <p className={globalStyles.formError}>{errors.category.message}</p>
         )}

@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "../../store/store";
 import { getAutoById, editAuto, clearEditState } from "../../slices/autoEdit";
+import { getCategories } from "../../slices/categories";
+import { getUsers } from "../../slices/users";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -14,13 +16,19 @@ const AutoEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { auto, loading, error, success } = useSelector((state) => state.reducer.autoEdit);
+  const { lista: categorias, loading: loadingCategorias } = useSelector(
+    (state) => state.reducer.categories
+  );
+  const { lista: users, loading: loadingUsers } = useSelector(
+    (state) => state.reducer.users
+  );
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Omit<Auto, "_id">>({
+  } = useForm<Omit<Auto, "_id"> & { category: string }>({
     resolver: joiResolver(autoEditSchema),
     defaultValues: {
       name: "",
@@ -30,14 +38,17 @@ const AutoEdit = () => {
       image: "",
       ownerId: "",
       isActive: true,
+      category: "",
     },
   });
 
   useEffect(() => {
     if (id) dispatch(getAutoById(id));
+    dispatch(getCategories());
+    dispatch(getUsers());
     return () => { dispatch(clearEditState()); };
   }, [id, dispatch]);
-
+  
   useEffect(() => {
     if (auto) {
       reset({
@@ -48,15 +59,15 @@ const AutoEdit = () => {
         image: auto.image || "",
         ownerId: auto.ownerId || "",
         isActive: auto.isActive === undefined ? true : auto.isActive,
+        category: auto.category || "",
       });
     }
   }, [auto, reset]);
-
-  const onSubmit = (data: Omit<Auto, "_id">) => {
+  const onSubmit = (data: Omit<Auto, "_id"> & { category: string }) => {
     if (!id) return;
     dispatch(editAuto({ id, data }));
   };
-
+   
   return (
     <div
       className={globalStyles.container}
@@ -122,13 +133,42 @@ const AutoEdit = () => {
         <label className={globalStyles.formLabel} htmlFor="ownerId">
           Propietario (opcional)
         </label>
-        <input
+        <select
           id="ownerId"
           {...register("ownerId")}
-          type="text"
           className={globalStyles.formInput}
-        />
+          disabled={loadingUsers}
+        >
+          <option value="">Sin propietario</option>
+          {users
+            .filter((user) => user.isActive)
+            .map((user) => (
+              <option key={user._id} value={user._id}>
+                {user.name} {user.lastname}
+              </option>
+            ))}
+        </select>
         {errors.ownerId && <span className={globalStyles.formError}>{errors.ownerId.message}</span>}
+
+        <label className={globalStyles.formLabel} htmlFor="category">
+          Categoría
+        </label>
+        <select
+          id="category"
+          {...register("category")}
+          className={globalStyles.formInput}
+          disabled={loadingCategorias}
+        >
+          <option value="">Sin categoría</option>
+          {categorias
+            .filter((cat) => cat.isActive)
+            .map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+        </select>
+        {errors.category && <span className={globalStyles.formError}>{errors.category.message}</span>}
 
         <label className={globalStyles.formLabel} htmlFor="image">
           Imagen (URL opcional)

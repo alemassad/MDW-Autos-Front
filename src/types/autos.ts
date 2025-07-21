@@ -7,4 +7,5 @@ export interface Auto {
   price: number;  
   image?: string;
   ownerId: string;
+  category?: string; 
 }

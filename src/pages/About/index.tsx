@@ -31,7 +31,7 @@ const About = () => {
         </p>
         <h2 className={globalStyles.homeTitle}>Contáctanos</h2>
 
-        <div className={globalStyles.formAuto}>
+        <div className={globalStyles.contactInfo}>
           <p className={globalStyles.description}>
             Si tienes alguna pregunta o necesitas más información, no dudes en
             contactarnos:
@@ -46,7 +46,7 @@ const About = () => {
             </a>
           </p>
         </div>
-        <form className={globalStyles.formAuto}>
+        <form className={globalStyles.contactInfo}>
           <label className={globalStyles.formLabel}>
             Nombre:
             <input type="text" className={globalStyles.input} required />

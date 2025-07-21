@@ -4,29 +4,35 @@ import { autoIdSchema } from "./validations";
 import { useNavigate } from "react-router-dom";
 import globalStyles from "../Pages.module.css";
 import miraAuto from "../../assets/miraAuto.webp";
+import { useDispatch, useSelector } from "../../store/store";
+import { getAutoById, clearEditState } from "../../slices/autoEdit";
+import { useState } from "react";
 
-import axios from "../../config/axios";
+type FormValues = { autoId: string };
 
 const BuscarId = () => {
+  const [localError, setLocalError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.reducer.autoEdit);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<{ autoId: string }>({
+  } = useForm<FormValues>({
     resolver: joiResolver(autoIdSchema),
   });
 
-  const onSubmit = async ({ autoId }: { autoId: string }) => {
+  const onSubmit = async ({ autoId }: FormValues) => {
+    setLocalError("");
+    dispatch(clearEditState());
     try {
-      const res = await axios.get(`/cars/${autoId.trim()}`);
-      if (res.data && res.data.data) {
-        navigate(`/autos/modificar/${autoId.trim()}`);
-      } else {
-        reset();
-      }
+      await dispatch(getAutoById(autoId.trim())).unwrap();
+      navigate(`/autos/modificar/${autoId.trim()}`);
     } catch {
+      setLocalError("No se encontró un auto con esa ID.");
       reset();
     }
   };
@@ -64,6 +70,9 @@ const BuscarId = () => {
         <button type="submit" className={globalStyles.formButton}>
           Buscar
         </button>
+        {(localError || error) && (
+          <p className={globalStyles.formError}>{localError || error}</p>
+        )}
       </form>
     </div>
   );
