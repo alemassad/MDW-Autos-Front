@@ -154,7 +154,7 @@ Framework de utilidades CSS para estilos rápidos y responsivos en algunos compo
 
 El frontend está desplegado en Vercel y disponible en:
 
-[https://mdw-autos-frontend.vercel.app/]
+[https://mdw-autos-front.vercel.app/]
 
 ## Notas
 
