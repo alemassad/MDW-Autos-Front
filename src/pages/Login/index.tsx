@@ -40,11 +40,11 @@ const Login = () => {
       localStorage.setItem("token", token);
 
       const response = await api.get(`/users/email/${data.email}`);
-
+      console.log("Respuesta backend:", response.data);
       localStorage.setItem(
         "user",
         JSON.stringify({
-          isAdmin: response.data.isAdmin || false,
+          isAdmin: response.data.data.isAdmin || false,
         })
       );
       navigate("/");
