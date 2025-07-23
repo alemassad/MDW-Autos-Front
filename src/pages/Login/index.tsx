@@ -40,7 +40,7 @@ const Login = () => {
       localStorage.setItem("token", token);
 
       const response = await api.get(`/users/email/${data.email}`);
-      console.log("Respuesta backend:", response.data);
+
       localStorage.setItem(
         "user",
         JSON.stringify({
@@ -65,15 +65,7 @@ const Login = () => {
         className={globalStyles.container}
         style={{
           backgroundImage: `url(${loginAuto})`,
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          maxWidth: "50vw",
-          maxHeight: "50vh",
           backgroundSize: "cover",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
         }}
       >
         <h2 className={globalStyles.title}>Login</h2>
@@ -107,7 +99,9 @@ const Login = () => {
                 className={globalStyles.formInput}
               />
               {errors.password && (
-                <p className={globalStyles.formError}>{errors.password.message}</p>
+                <p className={globalStyles.formError}>
+                  {errors.password.message}
+                </p>
               )}
             </div>
             <button type="submit" className={globalStyles.formButton}>

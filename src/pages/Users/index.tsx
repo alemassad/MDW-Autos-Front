@@ -21,14 +21,7 @@ const Users = () => {
       className={globalStyles.container}
       style={{
         backgroundImage: `url(${userCar})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundSize: "cover"
       }}
     >
       <h1 className={globalStyles.title}>Usuarios</h1>

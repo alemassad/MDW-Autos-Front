@@ -1,14 +1,13 @@
-// File: src/pages/Category/index.tsx
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
-import "../../App.css"; // Mantén tus estilos globales si los usas
-import globalStyles from "../Pages.module.css"; // Reutiliza los estilos modulares de Pages
+import "../../App.css";
+import globalStyles from "../Pages.module.css"; 
 import { useSelector, useDispatch } from "../../store/store";
-import { getCategoryById, clearCategory } from "../../slices/categories"; // Importa el nuevo thunk y el reducer
-import autoreuters from "../../assets/autoreuters.jpg"; // Puedes usar una imagen existente o añadir una nueva
-import categoryIdSchema from "./validations"; // Importa el esquema de validación
+import { getCategoryById, clearCategory } from "../../slices/categories"; 
+import autoreuters from "../../assets/autoreuters.jpg"; 
+import categoryIdSchema from "./validations";
 
 type FormValues = { categoryId: string };
 
@@ -50,15 +49,7 @@ const CategoryPage = () => {
     <div className={globalStyles.container} 
       style={{
         backgroundImage: `url(${autoreuters})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "20px",
+        backgroundSize: "cover"
       }}>
       <h1 className={globalStyles.title}>Buscar Categoría por ID</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}> 

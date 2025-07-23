@@ -1,9 +1,8 @@
-// File: src/pages/CategoryAdd/index.tsx
 import { useEffect } from "react";
-import globalStyles from "../Pages.module.css"; // Reutiliza los estilos globales
+import globalStyles from "../Pages.module.css"; 
 import { useDispatch, useSelector } from "../../store/store";
-import { addCategory, clearAddState } from "../../slices/categoryAdd"; // Importa el nuevo slice
-import categoryImage from "../../assets/autoreuters.jpg"; // Puedes usar una imagen relevante para categorías
+import { addCategory, clearAddState } from "../../slices/categoryAdd"; 
+import categoryImage from "../../assets/autoreuters.jpg";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { categoryAddSchema } from "./validations";
@@ -49,15 +48,7 @@ const CategoryAdd = () => {
       className={globalStyles.container}
       style={{
         backgroundImage: `url(${categoryImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "20px",
+        backgroundSize: "cover"
       }}
     >
       <h1 className={globalStyles.title}>Agregar Nueva Categoría</h1>

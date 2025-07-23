@@ -68,14 +68,7 @@ const CategoryEdit = () => {
       className={globalStyles.container}
       style={{
         backgroundImage: `url(${categoryImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundSize: "cover"
       }}
     >
       <h1 className={globalStyles.title}>Modificar Categoría</h1>

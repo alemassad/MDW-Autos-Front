@@ -52,14 +52,7 @@ const UserBuscar = () => {
       className={globalStyles.container}
       style={{
         backgroundImage: `url(${userCar})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundSize: "cover"
       }}
     >
       <h1 className={globalStyles.title}>Buscar Usuario por ID</h1>

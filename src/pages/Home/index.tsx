@@ -1,21 +1,11 @@
 import globalStyles from "../Pages.module.css";
-import automotores from "../../assets/automotores.jpg";
+import automotor from "../../assets/automotor.png";
 
 const Home = () => {
   return (
     <div
-      className={globalStyles.container}
-      style={{
-        backgroundImage: `url(${automotores})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className={globalStyles.pageContainer}
+      style={{ backgroundImage: `url(${automotor})` }}
     >
       <h1 className={globalStyles.title}>
         Bienvenido a nuestra agencia de Atomotores

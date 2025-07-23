@@ -73,14 +73,7 @@ const AutoEdit = () => {
       className={globalStyles.container}
       style={{
         backgroundImage: `url(${miraAuto})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundSize: "cover"
       }}
     >
       <h1 className={globalStyles.title}>Modificar Auto</h1>

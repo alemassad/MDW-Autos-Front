@@ -25,7 +25,7 @@ const SignUp = () => {
   } = useForm<FormValues>({ resolver: joiResolver(signUpSchema) });
 
   const handleSignUp = handleSubmit(async (data) => {
-    setLoading(true); // <-- Agrega esto
+    setLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, data.email, data.password);
       setTimeout(() => {
@@ -43,14 +43,7 @@ const SignUp = () => {
       className={globalStyles.container}
       style={{
         backgroundImage: `url(${registraAuto})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "80vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundSize: "cover"
       }}
     >
       <h2 className={globalStyles.title}>SignUp</h2>

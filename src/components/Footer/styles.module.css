@@ -1,20 +1,20 @@
 .footer {
-  background: #232946;      /* Azul oscuro elegante */
-  color: #eebbc3;           /* Rosa suave */
+  background: #232946;    
+  color: #eebbc3;           
   text-align: center;
   font-size: 1rem;
-  box-shadow: 0 -2px 8px rgba(35, 41, 70, 0.15); /* Sombra azul oscuro */
+  box-shadow: 0 -2px 8px rgba(35, 41, 70, 0.15);
 }
 .copyright {
   margin-bottom: 0.5rem;
 }
 .developer {
-  color: #a5b4fc;           /* Azul suave */
+  color: #a5b4fc;           
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
 }
 .developer:hover {
-  color: #eebbc3;           /* Rosa suave al pasar el mouse */
+  color: #eebbc3;         
   text-decoration: underline;
 }

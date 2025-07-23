@@ -50,17 +50,7 @@ const Auto = () => {
   return (
     <div
       className={globalStyles.container}
-      style={{
-        backgroundImage: `url(${buscaaut})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      style={{ backgroundImage: `url(${buscaaut})`, backgroundSize: "cover" }}
     >
       <h1 className={globalStyles.title}>Buscar Vehículo por ID</h1>
       <form onSubmit={handleSubmit(onSubmit)} className={globalStyles.formAuto}>

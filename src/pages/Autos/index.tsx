@@ -22,14 +22,7 @@ const Autos = () => {
       className={globalStyles.container}
       style={{
         backgroundImage: `url(${autoreuters})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundSize: "cover"
       }}>
     
       <h1 className={globalStyles.title}>Vehículos Disponibles</h1>

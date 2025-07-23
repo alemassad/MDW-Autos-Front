@@ -52,15 +52,7 @@ const CategoryDelete = () => {
         className={globalStyles.container}
         style={{
           backgroundImage: `url(${categoryImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "20px",
+          backgroundSize: "cover"
         }}
       >
         <h1 className={globalStyles.title}>Eliminar Categoría por ID</h1>

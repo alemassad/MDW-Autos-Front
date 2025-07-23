@@ -47,13 +47,6 @@ const UserAdd = () => {
       style={{
         backgroundImage: `url(${registraAuto})`,
         backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <h1 className={globalStyles.title}>Agregar Usuario</h1>
