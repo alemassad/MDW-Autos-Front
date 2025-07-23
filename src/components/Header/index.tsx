@@ -4,6 +4,7 @@ import styles from "./styles.module.css";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import Logo from "../logo/Logo";
+import { useState } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ const Header = () => {
   const token = localStorage.getItem("token");
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
 
   const handleOnClick = (link: string) => {
     navigate(link);
@@ -25,17 +28,33 @@ const Header = () => {
 
   const renderNavItem = (item: NavItem, index: number) => {
     if ("items" in item) {
+      const isDropdownOpen = openDropdown === index;
       return (
         <li key={index} className={styles.dropdown}>
-          <span className={styles.item}>{item.title}</span>
-          <ul className={styles.dropdownContent}>
+          <span
+            className={styles.item}
+            onClick={() =>
+              setOpenDropdown(isDropdownOpen ? null : index)
+            }
+          >
+            {item.title}
+          </span>
+          <ul
+            className={`${styles.dropdownContent} ${
+              isDropdownOpen ? styles.showMenu : ""
+            }`}
+          >
             {item.items.map((subItem, subIndex) => (
               <li
                 key={subIndex}
                 className={`${styles.item} ${
                   location.pathname === subItem.link ? styles.active : ""
                 }`}
-                onClick={() => handleOnClick(subItem.link)}
+                onClick={() => {
+                  handleOnClick(subItem.link);
+                  setMenuOpen(false);
+                  setOpenDropdown(null);
+                }}
               >
                 {subItem.title}
               </li>
@@ -92,8 +111,15 @@ const Header = () => {
           />
         ))}
       </div>
+      <button
+        className={styles.menuButton}
+        aria-label="Abrir menú"
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        ☰
+      </button>
       <nav className={styles.nav}>
-        <ul className={styles.list}>
+        <ul className={`${styles.list} ${menuOpen ? styles.showMenu : ""}`}>
           {getNavItems().map(renderNavItem)}
           {token && (
             <li
